@@ -278,6 +278,66 @@ Tag behavior:
 - Slack: supports `<@MEMBER_ID>`, `<!channel>`, `<!here>`, `<!everyone>`, `<!subteam^GROUP_ID>`
 - `file` callbacks ignore tag options
 
+### OpenClaw Integration
+
+Forward Claude Code session events to an [OpenClaw](https://openclaw.ai/) gateway to enable automated responses and workflows via your OpenClaw agent.
+
+**Quick setup (recommended):**
+
+```bash
+/oh-my-claudecode:configure-notifications
+# → When prompted, type "openclaw" → choose "OpenClaw Gateway"
+```
+
+**Manual setup:** create `~/.claude/omc_config.openclaw.json`:
+
+```json
+{
+  "enabled": true,
+  "gateways": {
+    "my-gateway": {
+      "url": "https://your-gateway.example.com/wake",
+      "headers": { "Authorization": "Bearer YOUR_TOKEN" },
+      "method": "POST",
+      "timeout": 10000
+    }
+  },
+  "hooks": {
+    "session-start": { "gateway": "my-gateway", "instruction": "Session started for {{projectName}}", "enabled": true },
+    "stop":          { "gateway": "my-gateway", "instruction": "Session stopping for {{projectName}}", "enabled": true }
+  }
+}
+```
+
+**Environment variables:**
+
+| Variable | Description |
+|----------|-------------|
+| `OMC_OPENCLAW=1` | Enable OpenClaw |
+| `OMC_OPENCLAW_DEBUG=1` | Enable debug logging |
+| `OMC_OPENCLAW_CONFIG=/path/to/config.json` | Override config file path |
+
+**Supported hook events (6 active in bridge.ts):**
+
+| Event | Trigger | Key template variables |
+|-------|---------|----------------------|
+| `session-start` | Session begins | `{{sessionId}}`, `{{projectName}}`, `{{projectPath}}` |
+| `stop` | Claude response completes | `{{sessionId}}`, `{{projectName}}` |
+| `keyword-detector` | Every prompt submission | `{{prompt}}`, `{{sessionId}}` |
+| `ask-user-question` | Claude requests user input | `{{question}}`, `{{sessionId}}` |
+| `pre-tool-use` | Before tool invocation (high frequency) | `{{toolName}}`, `{{sessionId}}` |
+| `post-tool-use` | After tool invocation (high frequency) | `{{toolName}}`, `{{sessionId}}` |
+
+**Reply channel environment variables:**
+
+| Variable | Description |
+|----------|-------------|
+| `OPENCLAW_REPLY_CHANNEL` | Reply channel (e.g. `discord`) |
+| `OPENCLAW_REPLY_TARGET` | Channel ID |
+| `OPENCLAW_REPLY_THREAD` | Thread ID |
+
+See `scripts/openclaw-gateway-demo.mjs` for a reference gateway that relays OpenClaw payloads to Discord via ClawdBot.
+
 ---
 
 ## Documentation
