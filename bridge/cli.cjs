@@ -34275,6 +34275,10 @@ instance.init({
   supportedLngs: SUPPORTED_LANGUAGES,
   initImmediate: false,
   // Synchronous loading for CLI
+  debug: false,
+  // Disable debug output
+  showSupportNotice: false,
+  // Suppress promotional message
   resources: {
     en: { translation: en_default },
     zh: { translation: zh_default }

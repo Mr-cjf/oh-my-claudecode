@@ -66,6 +66,8 @@ i18next.init({
   fallbackLng: 'en',
   supportedLngs: SUPPORTED_LANGUAGES,
   initImmediate: false, // Synchronous loading for CLI
+  debug: false, // Disable debug output
+  showSupportNotice: false, // Suppress promotional message
   resources: {
     en: { translation: enLocale },
     zh: { translation: zhLocale },
