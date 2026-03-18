@@ -6,17 +6,16 @@
  *
  * Commands:
  * - run: Start an interactive session
- * - init: Initialize configuration in current directory
  * - config: Show or edit configuration
  * - setup: Sync all OMC components (hooks, agents, skills)
  */
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
+import { writeFileSync, existsSync } from 'fs';
+import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { loadConfig, getConfigPaths, generateConfigSchema } from '../config/loader.js';
-import { getDefaultModelHigh, getDefaultModelMedium, getDefaultModelLow, } from '../config/models.js';
+import { t } from '../i18n/index.js';
+import { loadConfig, getConfigPaths, } from '../config/loader.js';
 import { createOmcSession } from '../index.js';
 import { checkForUpdates, performUpdate, formatUpdateNotification, getInstalledVersion, getOMCConfig, reconcileUpdateRuntime, CONFIG_FILE, } from '../features/auto-update.js';
 import { install as installOmc, isInstalled, getInstallInfo } from '../installer/index.js';
@@ -50,7 +49,7 @@ async function defaultAction() {
 }
 program
     .name('omc')
-    .description('Multi-agent orchestration system for Claude Agent SDK')
+    .description(t('cli.description'))
     .version(version)
     .allowUnknownOption()
     .action(defaultAction);
@@ -59,7 +58,7 @@ program
  */
 program
     .command('launch [args...]')
-    .description('Launch Claude Code with native tmux shell integration')
+    .description(t('cli.launch.description'))
     .allowUnknownOption()
     .addHelpText('after', `
 Examples:
@@ -86,7 +85,7 @@ Environment:
  */
 program
     .command('interop')
-    .description('Launch split-pane tmux session with Claude Code (OMC) and Codex (OMX)')
+    .description(t('cli.interop.description'))
     .addHelpText('after', `
 Requirements:
   - Must be running inside a tmux session
@@ -100,185 +99,20 @@ Requirements:
  */
 program
     .command('ask [args...]')
-    .description('Run provider advisor prompt and write an ask artifact')
+    .description(t('cli.ask.description'))
     .allowUnknownOption()
     .addHelpText('after', `\n${ASK_USAGE}`)
     .action(async (args) => {
     await askCommand(args || []);
 });
 /**
- * Init command - Initialize configuration
- */
-program
-    .command('init')
-    .description('Initialize OMC configuration in the current directory')
-    .option('-g, --global', 'Initialize global user configuration')
-    .option('-f, --force', 'Overwrite existing configuration')
-    .addHelpText('after', `
-Examples:
-  $ omc init                     Initialize in current directory
-  $ omc init --global            Initialize global configuration
-  $ omc init --force             Overwrite existing config`)
-    .action(async (options) => {
-    console.log(chalk.yellow('⚠️  DEPRECATED: The init command is deprecated.'));
-    console.log(chalk.gray('Configuration is now managed automatically. Use /oh-my-claudecode:omc-setup instead.\n'));
-    const paths = getConfigPaths();
-    const targetPath = options.global ? paths.user : paths.project;
-    const targetDir = dirname(targetPath);
-    console.log(chalk.blue('Oh-My-ClaudeCode Configuration Setup\n'));
-    // Check if config already exists
-    if (existsSync(targetPath) && !options.force) {
-        console.log(chalk.yellow(`Configuration already exists at ${targetPath}`));
-        console.log(chalk.gray('Use --force to overwrite'));
-        return;
-    }
-    // Create directory if needed
-    if (!existsSync(targetDir)) {
-        mkdirSync(targetDir, { recursive: true });
-        console.log(chalk.green(`Created directory: ${targetDir}`));
-    }
-    // Resolve current default model IDs (respects OMC_MODEL_* env vars)
-    const modelHigh = getDefaultModelHigh();
-    const modelMedium = getDefaultModelMedium();
-    const modelLow = getDefaultModelLow();
-    // Generate config content
-    const configContent = `// Oh-My-ClaudeCode Configuration
-// See: https://github.com/Yeachan-Heo/oh-my-claudecode for documentation
-//
-// Model IDs can be overridden via environment variables:
-//   OMC_MODEL_HIGH   (opus-class)
-//   OMC_MODEL_MEDIUM (sonnet-class)
-//   OMC_MODEL_LOW    (haiku-class)
-{
-  "$schema": "./omc-schema.json",
-
-  // Agent model configurations
-  "agents": {
-    "omc": {
-      // Main orchestrator - uses the most capable model
-      "model": "${modelHigh}"
-    },
-    "explore": {
-      // Fast pattern matching - uses fastest model
-      "model": "${modelLow}"
-    },
-    "analyst": {
-      // Requirements analysis and acceptance criteria
-      "model": "${modelHigh}"
-    },
-    "planner": {
-      // Strategic task sequencing and execution plans
-      "model": "${modelHigh}"
-    },
-    "architect": {
-      // System design, boundaries, interfaces
-      "model": "${modelHigh}"
-    },
-    "debugger": {
-      // Root-cause analysis, regression isolation
-      "model": "${modelMedium}"
-    },
-    "executor": {
-      // Code implementation, refactoring
-      "model": "${modelMedium}"
-    },
-    "verifier": {
-      // Completion evidence, claim validation
-      "model": "${modelMedium}"
-    },
-    "critic": {
-      // Plan/design critical challenge
-      "model": "${modelHigh}"
-    },
-    "writer": {
-      // Docs, migration notes, user guidance
-      "model": "${modelLow}"
-    }
-  },
-
-  // Feature toggles
-  "features": {
-    "parallelExecution": true,
-    "lspTools": true,
-    "astTools": true,
-    "continuationEnforcement": true,
-    "autoContextInjection": true
-  },
-
-  // MCP server integrations
-  "mcpServers": {
-    "exa": {
-      "enabled": true
-      // Set EXA_API_KEY environment variable for API key
-    },
-    "context7": {
-      "enabled": true
-    }
-  },
-
-  // Permission settings
-  "permissions": {
-    "allowBash": true,
-    "allowEdit": true,
-    "allowWrite": true,
-    "maxBackgroundTasks": 5
-  },
-
-  // Magic keyword triggers (customize if desired)
-  "magicKeywords": {
-    "ultrawork": ["ultrawork", "ulw", "uw"],
-    "search": ["search", "find", "locate"],
-    "analyze": ["analyze", "investigate", "examine"]
-  }
-}
-`;
-    writeFileSync(targetPath, configContent);
-    console.log(chalk.green(`Created configuration: ${targetPath}`));
-    // Also create the JSON schema for editor support
-    const schemaPath = join(targetDir, 'omc-schema.json');
-    writeFileSync(schemaPath, JSON.stringify(generateConfigSchema(), null, 2));
-    console.log(chalk.green(`Created JSON schema: ${schemaPath}`));
-    console.log(chalk.blue('\nSetup complete!'));
-    console.log(chalk.gray('Edit the configuration file to customize your setup.'));
-    // Create AGENTS.md template if it doesn't exist
-    const agentsMdPath = join(process.cwd(), 'AGENTS.md');
-    if (!existsSync(agentsMdPath) && !options.global) {
-        const agentsMdContent = `# Project Agents Configuration
-
-This file provides context and instructions to AI agents working on this project.
-
-## Project Overview
-
-<!-- Describe your project here -->
-
-## Architecture
-
-<!-- Describe the architecture and key components -->
-
-## Conventions
-
-<!-- List coding conventions, naming patterns, etc. -->
-
-## Important Files
-
-<!-- List key files agents should know about -->
-
-## Common Tasks
-
-<!-- Describe common development tasks and how to perform them -->
-`;
-        writeFileSync(agentsMdPath, agentsMdContent);
-        console.log(chalk.green(`Created AGENTS.md template`));
-    }
-});
-/**
  * Config command - Show or validate configuration
  */
 program
     .command('config')
-    .description('Show current configuration')
-    .option('-v, --validate', 'Validate configuration')
-    .option('-p, --paths', 'Show configuration file paths')
+    .description(t('cli.config.description'))
+    .option('-v, --validate', t('cli.config.validate'))
+    .option('-p, --paths', t('cli.config.paths'))
     .addHelpText('after', `
 Examples:
   $ omc config                   Show current configuration
@@ -289,40 +123,40 @@ Examples:
     .action(async (options) => {
     if (options.paths) {
         const paths = getConfigPaths();
-        console.log(chalk.blue('Configuration file paths:'));
-        console.log(`  User:    ${paths.user}`);
-        console.log(`  Project: ${paths.project}`);
-        console.log(chalk.blue('\nFile status:'));
-        console.log(`  User:    ${existsSync(paths.user) ? chalk.green('exists') : chalk.gray('not found')}`);
-        console.log(`  Project: ${existsSync(paths.project) ? chalk.green('exists') : chalk.gray('not found')}`);
+        console.log(chalk.blue(t('cli.config.pathsHeader')));
+        console.log(`  ${t('cli.config.user')}    ${paths.user}`);
+        console.log(`  ${t('cli.config.project')} ${paths.project}`);
+        console.log(chalk.blue(`\n${t('cli.config.fileStatus')}`));
+        console.log(`  ${t('cli.config.user')}    ${existsSync(paths.user) ? chalk.green(t('cli.config.exists')) : chalk.gray(t('cli.config.notFound'))}`);
+        console.log(`  ${t('cli.config.project')} ${existsSync(paths.project) ? chalk.green(t('cli.config.exists')) : chalk.gray(t('cli.config.notFound'))}`);
         return;
     }
     const config = loadConfig();
     if (options.validate) {
-        console.log(chalk.blue('Validating configuration...\n'));
+        console.log(chalk.blue(t('cli.config.validating') + '\n'));
         // Check for required fields
         const warnings = [];
         const errors = [];
         if (!process.env.ANTHROPIC_API_KEY) {
-            warnings.push('ANTHROPIC_API_KEY environment variable not set');
+            warnings.push(t('cli.errors.envNotSet', { env: 'ANTHROPIC_API_KEY' }));
         }
         if (config.mcpServers?.exa?.enabled && !process.env.EXA_API_KEY && !config.mcpServers.exa.apiKey) {
-            warnings.push('Exa is enabled but EXA_API_KEY is not set');
+            warnings.push(t('cli.errors.exaEnabled'));
         }
         if (errors.length > 0) {
-            console.log(chalk.red('Errors:'));
+            console.log(chalk.red(t('cli.config.errors')));
             errors.forEach(e => console.log(chalk.red(`  - ${e}`)));
         }
         if (warnings.length > 0) {
-            console.log(chalk.yellow('Warnings:'));
+            console.log(chalk.yellow(t('cli.config.warnings')));
             warnings.forEach(w => console.log(chalk.yellow(`  - ${w}`)));
         }
         if (errors.length === 0 && warnings.length === 0) {
-            console.log(chalk.green('Configuration is valid!'));
+            console.log(chalk.green(t('cli.config.valid')));
         }
         return;
     }
-    console.log(chalk.blue('Current configuration:\n'));
+    console.log(chalk.blue(t('cli.config.current') + '\n'));
     console.log(JSON.stringify(config, null, 2));
 });
 /**
@@ -330,21 +164,21 @@ Examples:
  */
 const _configStopCallback = program
     .command('config-stop-callback <type>')
-    .description('Configure stop hook callbacks (file/telegram/discord/slack)')
-    .option('--enable', 'Enable callback')
-    .option('--disable', 'Disable callback')
-    .option('--path <path>', 'File path (supports {session_id}, {date}, {time})')
-    .option('--format <format>', 'File format: markdown | json')
-    .option('--token <token>', 'Bot token (telegram or discord-bot)')
-    .option('--chat <id>', 'Telegram chat ID')
-    .option('--webhook <url>', 'Discord webhook URL')
-    .option('--channel-id <id>', 'Discord bot channel ID (used with --profile)')
-    .option('--tag-list <csv>', 'Replace tag list (comma-separated, telegram/discord only)')
-    .option('--add-tag <tag>', 'Append one tag (telegram/discord only)')
-    .option('--remove-tag <tag>', 'Remove one tag (telegram/discord only)')
-    .option('--clear-tags', 'Clear all tags (telegram/discord only)')
-    .option('--profile <name>', 'Named notification profile to configure')
-    .option('--show', 'Show current configuration')
+    .description(t('cli.config.stopCallback.description'))
+    .option('--enable', t('cli.config.stopCallback.enable'))
+    .option('--disable', t('cli.config.stopCallback.disable'))
+    .option('--path <path>', t('cli.config.stopCallback.path'))
+    .option('--format <format>', t('cli.config.stopCallback.format'))
+    .option('--token <token>', t('cli.config.stopCallback.token'))
+    .option('--chat <id>', t('cli.config.stopCallback.chat'))
+    .option('--webhook <url>', t('cli.config.stopCallback.webhook'))
+    .option('--channel-id <id>', t('cli.config.stopCallback.channelId'))
+    .option('--tag-list <csv>', t('cli.config.stopCallback.tagList'))
+    .option('--add-tag <tag>', t('cli.config.stopCallback.addTag'))
+    .option('--remove-tag <tag>', t('cli.config.stopCallback.removeTag'))
+    .option('--clear-tags', t('cli.config.stopCallback.clearTags'))
+    .option('--profile <name>', t('cli.config.stopCallback.profile'))
+    .option('--show', t('cli.config.stopCallback.show'))
     .addHelpText('after', `
 Types:
   file       File system callback (saves session summary to disk)
@@ -376,8 +210,8 @@ Examples:
     if (options.profile) {
         const profileValidTypes = ['file', 'telegram', 'discord', 'discord-bot', 'slack', 'webhook'];
         if (!profileValidTypes.includes(type)) {
-            console.error(chalk.red(`Invalid type for profile: ${type}`));
-            console.error(chalk.gray(`Valid types: ${profileValidTypes.join(', ')}`));
+            console.error(chalk.red(t('cli.config.stopCallback.invalidType', { type })));
+            console.error(chalk.gray(t('cli.config.stopCallback.validTypes', { types: profileValidTypes.join(', ') })));
             process.exit(1);
         }
         const config = getOMCConfig();
@@ -387,17 +221,17 @@ Examples:
         // Show current profile config
         if (options.show) {
             if (config.notificationProfiles[profileName]) {
-                console.log(chalk.blue(`Profile "${profileName}" — ${type} configuration:`));
+                console.log(chalk.blue(`Profile "${profileName}" — ${type} ${t('cli.config.stopCallback.profileConfig')}`));
                 const platformConfig = profile[type];
                 if (platformConfig) {
                     console.log(JSON.stringify(platformConfig, null, 2));
                 }
                 else {
-                    console.log(chalk.yellow(`No ${type} platform configured in profile "${profileName}".`));
+                    console.log(chalk.yellow(t('cli.config.stopCallback.noPlatform', { platform: type, profile: profileName })));
                 }
             }
             else {
-                console.log(chalk.yellow(`Profile "${profileName}" not found.`));
+                console.log(chalk.yellow(t('cli.config.stopCallback.profileNotFound', { profile: profileName })));
             }
             return;
         }
@@ -410,7 +244,7 @@ Examples:
             case 'discord': {
                 const current = profile.discord;
                 if (enabled === true && (!options.webhook && !current?.webhookUrl)) {
-                    console.error(chalk.red('Discord requires --webhook <webhook_url>'));
+                    console.error(chalk.red(t('cli.errors.discordRequiresWebhook')));
                     process.exit(1);
                 }
                 profile.discord = {
@@ -441,11 +275,11 @@ Examples:
             case 'telegram': {
                 const current = profile.telegram;
                 if (enabled === true && (!options.token && !current?.botToken)) {
-                    console.error(chalk.red('Telegram requires --token <bot_token>'));
+                    console.error(chalk.red(t('cli.errors.telegramRequiresToken')));
                     process.exit(1);
                 }
                 if (enabled === true && (!options.chat && !current?.chatId)) {
-                    console.error(chalk.red('Telegram requires --chat <chat_id>'));
+                    console.error(chalk.red(t('cli.errors.telegramRequiresChat')));
                     process.exit(1);
                 }
                 profile.telegram = {
@@ -459,7 +293,7 @@ Examples:
             case 'slack': {
                 const current = profile.slack;
                 if (enabled === true && (!options.webhook && !current?.webhookUrl)) {
-                    console.error(chalk.red('Slack requires --webhook <webhook_url>'));
+                    console.error(chalk.red(t('cli.errors.slackRequiresWebhook')));
                     process.exit(1);
                 }
                 profile.slack = {
@@ -787,6 +621,7 @@ program
     .option('-f, --force', 'Force reinstall even if up to date')
     .option('-q, --quiet', 'Suppress output except for errors')
     .option('--standalone', 'Force npm update even in plugin context')
+    .option('--clean', 'Purge old plugin cache versions immediately (bypass 24h grace period)')
     .addHelpText('after', `
 Examples:
   $ omc update                   Check and install updates
@@ -830,7 +665,7 @@ Examples:
         if (!options.quiet) {
             console.log(chalk.blue('\nStarting update...\n'));
         }
-        const result = await performUpdate({ verbose: !options.quiet, standalone: options.standalone });
+        const result = await performUpdate({ verbose: !options.quiet, standalone: options.standalone, clean: options.clean });
         if (result.success) {
             if (!options.quiet) {
                 console.log(chalk.green(`\n✓ ${result.message}`));
@@ -860,9 +695,10 @@ program
     .command('update-reconcile')
     .description('Internal: Reconcile runtime state after update (called by update command)')
     .option('-v, --verbose', 'Show detailed output')
+    .option('--skip-grace-period', 'Bypass 24h grace period for cache purge')
     .action(async (options) => {
     try {
-        const reconcileResult = reconcileUpdateRuntime({ verbose: options.verbose });
+        const reconcileResult = reconcileUpdateRuntime({ verbose: options.verbose, skipGracePeriod: options.skipGracePeriod });
         if (!reconcileResult.success) {
             console.error(chalk.red('Reconciliation failed:'));
             if (reconcileResult.errors) {

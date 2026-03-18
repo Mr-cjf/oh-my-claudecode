@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Git post-merge hook for i18n sync
+# This hook runs after pulling from upstream to detect new hardcoded strings
+
+set -e
+
+echo "🔍 Checking for new hardcoded strings after merge..."
+
+# Check if this is a fork with upstream remote
+if git remote | grep -q "upstream"; then
+    echo "📦 Detected upstream remote, checking for new strings..."
+
+    # Run i18n sync
+    if command -v npm &> /dev/null; then
+        npm run i18n:sync 2>/dev/null || true
+
+        # Check if there are new strings
+        if [ -f ".omc/i18n-sync-report.json" ]; then
+            NEW_COUNT=$(node -e "console.log(require('./.omc/i18n-sync-report.json').newStringsCount || 0)")
+
+            if [ "$NEW_COUNT" -gt 0 ]; then
+                echo ""
+                echo "⚠️  Detected $NEW_COUNT new hardcoded strings that need translation!"
+                echo ""
+                echo "To auto-translate these strings, run:"
+                echo "  npm run i18n:apply"
+                echo ""
+                echo "Or manually review the report at:"
+                echo "  .omc/i18n-sync-report.json"
+                echo ""
+            fi
+        fi
+    fi
+fi
+
+exit 0

@@ -1,0 +1,309 @@
+{
+  "cli": {
+    "name": "omc",
+    "description": "Multi-agent orchestration system for Claude Agent SDK",
+    "help": {
+      "usage": "Usage: omc <command> [options]",
+      "commands": "Commands:",
+      "options": "Options:",
+      "examples": "Examples:"
+    },
+    "launch": {
+      "description": "Launch Claude Code with native tmux shell integration",
+      "examples": {
+        "basic": "Launch Claude Code",
+        "madmax": "Launch with permissions bypass",
+        "yolo": "Launch with permissions bypass (alias)",
+        "notifyFalse": "Launch without CCNotifier events",
+        "explicit": "Explicit launch subcommand (same as bare omc)"
+      },
+      "options": {
+        "notify": "Enable/disable CCNotifier events. false sets OMC_NOTIFY=0 and suppresses all stop/session-start/session-idle notifications. Default: true"
+      },
+      "env": {
+        "notify": "Suppress all notifications (set by --notify false)"
+      }
+    },
+    "interop": {
+      "description": "Launch split-pane tmux session with Claude Code (OMC) and Codex (OMX)",
+      "requirements": {
+        "tmux": "Must be running inside a tmux session",
+        "claude": "Claude CLI must be installed",
+        "codex": "Codex CLI recommended (graceful fallback if missing)"
+      }
+    },
+    "ask": {
+      "description": "Run provider advisor prompt and write an ask artifact"
+    },
+    "config": {
+      "description": "Show current configuration",
+      "validate": "Validate configuration",
+      "paths": "Show configuration file paths",
+      "examples": {
+        "show": "Show current configuration",
+        "validate": "Validate configuration files",
+        "paths": "Show config file locations"
+      },
+      "pathsHeader": "Configuration file paths:",
+      "user": "User:",
+      "project": "Project:",
+      "fileStatus": "File status:",
+      "exists": "exists",
+      "notFound": "not found",
+      "validating": "Validating configuration...",
+      "errors": "Errors:",
+      "warnings": "Warnings:",
+      "valid": "Configuration is valid!",
+      "current": "Current configuration:",
+      "stopCallback": {
+        "description": "Configure stop hook callbacks (file/telegram/discord/slack)",
+        "types": {
+          "file": "File system callback (saves session summary to disk)",
+          "telegram": "Telegram bot notification",
+          "discord": "Discord webhook notification",
+          "slack": "Slack incoming webhook notification"
+        },
+        "profileTypes": {
+          "discord-bot": "Discord Bot API (token + channel ID)",
+          "slack": "Slack incoming webhook",
+          "webhook": "Generic webhook (POST with JSON body)"
+        },
+        "profile": "Named notification profile to configure",
+        "show": "Show current configuration",
+        "enable": "Enable callback",
+        "disable": "Disable callback",
+        "path": "File path (supports {session_id}, {date}, {time})",
+        "format": "File format: markdown | json",
+        "token": "Bot token (telegram or discord-bot)",
+        "chat": "Telegram chat ID",
+        "webhook": "Discord webhook URL",
+        "channelId": "Discord bot channel ID (used with --profile)",
+        "tagList": "Replace tag list (comma-separated, telegram/discord only)",
+        "addTag": "Append one tag (telegram/discord only)",
+        "removeTag": "Remove one tag (telegram/discord only)",
+        "clearTags": "Clear all tags (telegram/discord only)",
+        "profileConfig": "configuration:",
+        "noPlatform": "No {{platform}} platform configured in profile \"{{profile}}\".",
+        "profileNotFound": "Profile \"{{profile}}\" not found.",
+        "invalidType": "Invalid type for profile: {{type}}",
+        "validTypes": "Valid types: {{types}}"
+      }
+    },
+    "setup": {
+      "description": "Sync OMC hooks, agents, and skills to Claude Code",
+      "syncing": "Syncing OMC components...",
+      "success": "OMC setup complete!",
+      "failed": "Setup failed: {{error}}"
+    },
+    "version": {
+      "checking": "Checking for updates...",
+      "current": "Current version: {{version}}",
+      "latest": "Latest version: {{version}}",
+      "upToDate": "OMC is up to date!",
+      "updateAvailable": "Update available: {{current}} → {{latest}}",
+      "updateNow": "Run 'omc update' to update",
+      "updating": "Updating OMC...",
+      "updateSuccess": "OMC updated successfully!",
+      "updateFailed": "Update failed: {{error}}"
+    },
+    "doctor": {
+      "description": "Run diagnostics and check for issues",
+      "checking": "Running OMC diagnostics...",
+      "passed": "All checks passed!",
+      "failed": "Some checks failed:",
+      "warnings": "Warnings:",
+      "info": "Info:",
+      "checks": {
+        "config": "Configuration",
+        "env": "Environment variables",
+        "hooks": "OMC hooks",
+        "agents": "OMC agents",
+        "skills": "OMC skills",
+        "tmux": "tmux availability",
+        "node": "Node.js version",
+        "npm": "npm version"
+      },
+      "status": {
+        "ok": "OK",
+        "warning": "WARNING",
+        "error": "ERROR",
+        "missing": "MISSING",
+        "invalid": "INVALID",
+        "outdated": "OUTDATED"
+      }
+    },
+    "errors": {
+      "notFound": "Command not found: {{command}}",
+      "invalidOption": "Invalid option: {{option}}",
+      "missingArg": "Missing required argument: {{arg}}",
+      "configNotFound": "Configuration file not found",
+      "configInvalid": "Configuration invalid: {{message}}",
+      "envNotSet": "{{env}} environment variable not set",
+      "exaEnabled": "Exa is enabled but EXA_API_KEY is not set",
+      "discordRequiresWebhook": "Discord requires --webhook <webhook_url>",
+      "telegramRequiresToken": "Telegram requires --token <token>",
+      "telegramRequiresChat": "Telegram requires --chat <chat_id>",
+      "slackRequiresWebhook": "Slack requires --webhook <webhook_url>",
+      "fileRequiresPath": "File callback requires --path <path>",
+      "operationFailed": "Operation failed: {{reason}}",
+      "general": "Error: {{message}}"
+    },
+    "success": {
+      "operationComplete": "Operation completed successfully",
+      "configSaved": "Configuration saved",
+      "callbackEnabled": "{{type}} callback enabled",
+      "callbackDisabled": "{{type}} callback disabled"
+    },
+    "demo": {
+      "welcome": "Welcome to OMC!",
+      "teamStarted": "Team started successfully",
+      "agentActive": "Agent is now active",
+      "configValid": "Configuration validated successfully",
+      "operationComplete": "Operation completed"
+    }
+  },
+  "hud": {
+    "status": {
+      "running": "Running",
+      "idle": "Idle",
+      "error": "Error",
+      "waiting": "Waiting",
+      "active": "Active"
+    },
+    "agents": {
+      "active": "Active agents: {{count}}",
+      "none": "No active agents",
+      "list": "Agents",
+      "status": "Status",
+      "model": "Model"
+    },
+    "tokens": {
+      "used": "Used: {{used}}",
+      "remaining": "Remaining: {{remaining}}",
+      "total": "Total: {{total}}",
+      "percentage": "{{percent}}%"
+    },
+    "context": {
+      "used": "Context: {{used}}/{{total}}",
+      "percentage": "{{percent}}% used",
+      "warning": "Context limit warning: {{percent}}%"
+    },
+    "limits": {
+      "rateLimit": "Rate Limit",
+      "requests": "Requests: {{used}}/{{limit}}",
+      "tokens": "Tokens: {{used}}/{{limit}}",
+      "resetIn": "Reset in: {{time}}",
+      "exceeded": "Rate limit exceeded"
+    },
+    "session": {
+      "id": "Session: {{id}}",
+      "duration": "Duration: {{time}}",
+      "started": "Started: {{time}}"
+    },
+    "git": {
+      "repo": "Repo: {{name}}",
+      "branch": "Branch: {{name}}",
+      "dirty": " (dirty)",
+      "clean": " (clean)"
+    },
+    "model": {
+      "current": "Model: {{model}}",
+      "default": "Default",
+      "custom": "Custom"
+    },
+    "cwd": {
+      "current": "CWD: {{path}}"
+    },
+    "skills": {
+      "active": "Skills",
+      "lastUsed": "Last: {{skill}}",
+      "none": "No skills"
+    },
+    "todos": {
+      "pending": "Todos: {{count}}",
+      "completed": "Completed: {{count}}",
+      "none": "No todos"
+    },
+    "thinking": {
+      "budget": "Thinking budget: {{used}}/{{total}}",
+      "remaining": "Thinking: {{remaining}} remaining"
+    },
+    "permission": {
+      "mode": "Permission: {{mode}}",
+      "bypass": "BYPASS",
+      "standard": "Standard"
+    },
+    "autopilot": {
+      "mode": "Autopilot",
+      "active": "ACTIVE",
+      "inactive": "INACTIVE"
+    },
+    "prompt": {
+      "time": "Prompt time: {{time}}",
+      "pending": "Pending prompts: {{count}}"
+    },
+    "background": {
+      "jobs": "Background jobs: {{count}}",
+      "running": "{{count}} running",
+      "completed": "{{count}} completed"
+    },
+    "mission": {
+      "board": "Mission Board",
+      "active": "Active missions: {{count}}",
+      "none": "No active missions"
+    },
+    "prd": {
+      "active": "PRD active",
+      "none": "No PRD"
+    },
+    "ralph": {
+      "mode": "Ralph Mode",
+      "active": "ACTIVE",
+      "inactive": "INACTIVE"
+    }
+  },
+  "notifications": {
+    "success": "Operation successful",
+    "failed": "Operation failed: {{reason}}",
+    "sessionStart": "Session started",
+    "sessionStop": "Session stopped",
+    "sessionIdle": "Session idle",
+    "error": "Error: {{message}}",
+    "warning": "Warning: {{message}}",
+    "info": "Info: {{message}}"
+  },
+  "common": {
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "yes": "Yes",
+    "no": "No",
+    "on": "On",
+    "off": "Off",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "done": "Done",
+    "cancel": "Cancel",
+    "retry": "Retry",
+    "continue": "Continue",
+    "skip": "Skip",
+    "none": "None",
+    "all": "All",
+    "default": "Default",
+    "custom": "Custom",
+    "unknown": "Unknown",
+    "required": "Required",
+    "optional": "Optional",
+    "recommended": "Recommended",
+    "deprecated": "Deprecated"
+  },
+  "time": {
+    "seconds": "{{count}} second",
+    "seconds_plural": "{{count}} seconds",
+    "minutes": "{{count}} minute",
+    "minutes_plural": "{{count}} minutes",
+    "hours": "{{count}} hour",
+    "hours_plural": "{{count}} hours",
+    "days": "{{count}} day",
+    "days_plural": "{{count}} days"
+  }
+}

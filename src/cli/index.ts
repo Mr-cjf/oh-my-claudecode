@@ -16,6 +16,7 @@ import chalk from 'chalk';
 import { writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { t } from '../i18n/index.js';
 import {
   loadConfig,
   getConfigPaths,
@@ -85,7 +86,7 @@ async function defaultAction() {
 
 program
   .name('omc')
-  .description('Multi-agent orchestration system for Claude Agent SDK')
+  .description(t('cli.description'))
   .version(version)
   .allowUnknownOption()
   .action(defaultAction);
@@ -95,7 +96,7 @@ program
  */
 program
   .command('launch [args...]')
-  .description('Launch Claude Code with native tmux shell integration')
+  .description(t('cli.launch.description'))
   .allowUnknownOption()
   .addHelpText('after', `
 Examples:
@@ -123,7 +124,7 @@ Environment:
  */
 program
   .command('interop')
-  .description('Launch split-pane tmux session with Claude Code (OMC) and Codex (OMX)')
+  .description(t('cli.interop.description'))
   .addHelpText('after', `
 Requirements:
   - Must be running inside a tmux session
@@ -138,7 +139,7 @@ Requirements:
  */
 program
   .command('ask [args...]')
-  .description('Run provider advisor prompt and write an ask artifact')
+  .description(t('cli.ask.description'))
   .allowUnknownOption()
   .addHelpText('after', `\n${ASK_USAGE}`)
   .action(async (args: string[]) => {
@@ -151,9 +152,9 @@ program
  */
 program
   .command('config')
-  .description('Show current configuration')
-  .option('-v, --validate', 'Validate configuration')
-  .option('-p, --paths', 'Show configuration file paths')
+  .description(t('cli.config.description'))
+  .option('-v, --validate', t('cli.config.validate'))
+  .option('-p, --paths', t('cli.config.paths'))
   .addHelpText('after', `
 Examples:
   $ omc config                   Show current configuration
@@ -164,51 +165,51 @@ Examples:
   .action(async (options) => {
     if (options.paths) {
       const paths = getConfigPaths();
-      console.log(chalk.blue('Configuration file paths:'));
-      console.log(`  User:    ${paths.user}`);
-      console.log(`  Project: ${paths.project}`);
+      console.log(chalk.blue(t('cli.config.pathsHeader')));
+      console.log(`  ${t('cli.config.user')}    ${paths.user}`);
+      console.log(`  ${t('cli.config.project')} ${paths.project}`);
 
-      console.log(chalk.blue('\nFile status:'));
-      console.log(`  User:    ${existsSync(paths.user) ? chalk.green('exists') : chalk.gray('not found')}`);
-      console.log(`  Project: ${existsSync(paths.project) ? chalk.green('exists') : chalk.gray('not found')}`);
+      console.log(chalk.blue(`\n${t('cli.config.fileStatus')}`));
+      console.log(`  ${t('cli.config.user')}    ${existsSync(paths.user) ? chalk.green(t('cli.config.exists')) : chalk.gray(t('cli.config.notFound'))}`);
+      console.log(`  ${t('cli.config.project')} ${existsSync(paths.project) ? chalk.green(t('cli.config.exists')) : chalk.gray(t('cli.config.notFound'))}`);
       return;
     }
 
     const config = loadConfig();
 
     if (options.validate) {
-      console.log(chalk.blue('Validating configuration...\n'));
+      console.log(chalk.blue(t('cli.config.validating') + '\n'));
 
       // Check for required fields
       const warnings: string[] = [];
       const errors: string[] = [];
 
       if (!process.env.ANTHROPIC_API_KEY) {
-        warnings.push('ANTHROPIC_API_KEY environment variable not set');
+        warnings.push(t('cli.errors.envNotSet', { env: 'ANTHROPIC_API_KEY' }));
       }
 
       if (config.mcpServers?.exa?.enabled && !process.env.EXA_API_KEY && !config.mcpServers.exa.apiKey) {
-        warnings.push('Exa is enabled but EXA_API_KEY is not set');
+        warnings.push(t('cli.errors.exaEnabled'));
       }
 
       if (errors.length > 0) {
-        console.log(chalk.red('Errors:'));
+        console.log(chalk.red(t('cli.config.errors')));
         errors.forEach(e => console.log(chalk.red(`  - ${e}`)));
       }
 
       if (warnings.length > 0) {
-        console.log(chalk.yellow('Warnings:'));
+        console.log(chalk.yellow(t('cli.config.warnings')));
         warnings.forEach(w => console.log(chalk.yellow(`  - ${w}`)));
       }
 
       if (errors.length === 0 && warnings.length === 0) {
-        console.log(chalk.green('Configuration is valid!'));
+        console.log(chalk.green(t('cli.config.valid')));
       }
 
       return;
     }
 
-    console.log(chalk.blue('Current configuration:\n'));
+    console.log(chalk.blue(t('cli.config.current') + '\n'));
     console.log(JSON.stringify(config, null, 2));
   });
 
@@ -217,21 +218,21 @@ Examples:
  */
 const _configStopCallback = program
   .command('config-stop-callback <type>')
-  .description('Configure stop hook callbacks (file/telegram/discord/slack)')
-  .option('--enable', 'Enable callback')
-  .option('--disable', 'Disable callback')
-  .option('--path <path>', 'File path (supports {session_id}, {date}, {time})')
-  .option('--format <format>', 'File format: markdown | json')
-  .option('--token <token>', 'Bot token (telegram or discord-bot)')
-  .option('--chat <id>', 'Telegram chat ID')
-  .option('--webhook <url>', 'Discord webhook URL')
-  .option('--channel-id <id>', 'Discord bot channel ID (used with --profile)')
-  .option('--tag-list <csv>', 'Replace tag list (comma-separated, telegram/discord only)')
-  .option('--add-tag <tag>', 'Append one tag (telegram/discord only)')
-  .option('--remove-tag <tag>', 'Remove one tag (telegram/discord only)')
-  .option('--clear-tags', 'Clear all tags (telegram/discord only)')
-  .option('--profile <name>', 'Named notification profile to configure')
-  .option('--show', 'Show current configuration')
+  .description(t('cli.config.stopCallback.description'))
+  .option('--enable', t('cli.config.stopCallback.enable'))
+  .option('--disable', t('cli.config.stopCallback.disable'))
+  .option('--path <path>', t('cli.config.stopCallback.path'))
+  .option('--format <format>', t('cli.config.stopCallback.format'))
+  .option('--token <token>', t('cli.config.stopCallback.token'))
+  .option('--chat <id>', t('cli.config.stopCallback.chat'))
+  .option('--webhook <url>', t('cli.config.stopCallback.webhook'))
+  .option('--channel-id <id>', t('cli.config.stopCallback.channelId'))
+  .option('--tag-list <csv>', t('cli.config.stopCallback.tagList'))
+  .option('--add-tag <tag>', t('cli.config.stopCallback.addTag'))
+  .option('--remove-tag <tag>', t('cli.config.stopCallback.removeTag'))
+  .option('--clear-tags', t('cli.config.stopCallback.clearTags'))
+  .option('--profile <name>', t('cli.config.stopCallback.profile'))
+  .option('--show', t('cli.config.stopCallback.show'))
   .addHelpText('after', `
 Types:
   file       File system callback (saves session summary to disk)
@@ -263,8 +264,8 @@ Examples:
     if (options.profile) {
       const profileValidTypes = ['file', 'telegram', 'discord', 'discord-bot', 'slack', 'webhook'];
       if (!profileValidTypes.includes(type)) {
-        console.error(chalk.red(`Invalid type for profile: ${type}`));
-        console.error(chalk.gray(`Valid types: ${profileValidTypes.join(', ')}`));
+        console.error(chalk.red(t('cli.config.stopCallback.invalidType', { type })));
+        console.error(chalk.gray(t('cli.config.stopCallback.validTypes', { types: profileValidTypes.join(', ') })));
         process.exit(1);
       }
 
@@ -276,15 +277,15 @@ Examples:
       // Show current profile config
       if (options.show) {
         if (config.notificationProfiles[profileName]) {
-          console.log(chalk.blue(`Profile "${profileName}" — ${type} configuration:`));
+          console.log(chalk.blue(`Profile "${profileName}" — ${type} ${t('cli.config.stopCallback.profileConfig')}`));
           const platformConfig = profile[type];
           if (platformConfig) {
             console.log(JSON.stringify(platformConfig, null, 2));
           } else {
-            console.log(chalk.yellow(`No ${type} platform configured in profile "${profileName}".`));
+            console.log(chalk.yellow(t('cli.config.stopCallback.noPlatform', { platform: type, profile: profileName })));
           }
         } else {
-          console.log(chalk.yellow(`Profile "${profileName}" not found.`));
+          console.log(chalk.yellow(t('cli.config.stopCallback.profileNotFound', { profile: profileName })));
         }
         return;
       }
@@ -297,7 +298,7 @@ Examples:
         case 'discord': {
           const current = profile.discord;
           if (enabled === true && (!options.webhook && !current?.webhookUrl)) {
-            console.error(chalk.red('Discord requires --webhook <webhook_url>'));
+            console.error(chalk.red(t('cli.errors.discordRequiresWebhook')));
             process.exit(1);
           }
           profile.discord = {
@@ -328,11 +329,11 @@ Examples:
         case 'telegram': {
           const current = profile.telegram;
           if (enabled === true && (!options.token && !current?.botToken)) {
-            console.error(chalk.red('Telegram requires --token <bot_token>'));
+            console.error(chalk.red(t('cli.errors.telegramRequiresToken')));
             process.exit(1);
           }
           if (enabled === true && (!options.chat && !current?.chatId)) {
-            console.error(chalk.red('Telegram requires --chat <chat_id>'));
+            console.error(chalk.red(t('cli.errors.telegramRequiresChat')));
             process.exit(1);
           }
           profile.telegram = {
@@ -346,7 +347,7 @@ Examples:
         case 'slack': {
           const current = profile.slack;
           if (enabled === true && (!options.webhook && !current?.webhookUrl)) {
-            console.error(chalk.red('Slack requires --webhook <webhook_url>'));
+            console.error(chalk.red(t('cli.errors.slackRequiresWebhook')));
             process.exit(1);
           }
           profile.slack = {

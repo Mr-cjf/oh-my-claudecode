@@ -1,14 +1,13 @@
-English | [한국어](README.ko.md) | [中文](README.zh.md) | [日本語](README.ja.md) | [Español](README.es.md) | [Tiếng Việt](README.vi.md) | [Português](README.pt.md)
+English | [中文](README.zh.md)
 
 # oh-my-claudecode
 
 [![npm version](https://img.shields.io/npm/v/oh-my-claude-sisyphus?color=cb3837)](https://www.npmjs.com/package/oh-my-claude-sisyphus)
 [![npm downloads](https://img.shields.io/npm/dm/oh-my-claude-sisyphus?color=blue)](https://www.npmjs.com/package/oh-my-claude-sisyphus)
-[![GitHub stars](https://img.shields.io/github/stars/Yeachan-Heo/oh-my-claudecode?style=flat&color=yellow)](https://github.com/Yeachan-Heo/oh-my-claudecode/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/Mr-cjf/oh-my-claudecode?style=flat&color=yellow)](https://github.com/Mr-cjf/oh-my-claudecode/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Sponsor](https://img.shields.io/badge/Sponsor-❤️-red?style=flat&logo=github)](https://github.com/sponsors/Yeachan-Heo)
 
-> **For Codex users:** Check out [oh-my-codex](https://github.com/Yeachan-Heo/oh-my-codex) — the same orchestration experience for OpenAI Codex CLI.
+> **Fork of [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode)** - Enhanced with i18n support (free translation, multi-language)
 
 **Multi-agent orchestration for Claude Code. Zero learning curve.**
 
@@ -23,7 +22,7 @@ _Don't learn Claude Code. Just use OMC._
 **Step 1: Install**
 
 ```bash
-/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
+/plugin marketplace add https://github.com/Mr-cjf/oh-my-claudecode
 /plugin install oh-my-claudecode
 ```
 
@@ -277,6 +276,52 @@ Tag behavior:
 - Discord: supports `@here`, `@everyone`, numeric user IDs, and `role:<id>`
 - Slack: supports `<@MEMBER_ID>`, `<!channel>`, `<!here>`, `<!everyone>`, `<!subteam^GROUP_ID>`
 - `file` callbacks ignore tag options
+
+### 🌐 Internationalization (i18n)
+
+OMC now supports multiple languages! CLI output automatically adapts to your system language.
+
+**Supported Languages:**
+- 🇺🇸 English (en) - Complete
+- 🇨🇳 简体中文 (zh) - Complete
+- 📋 日本語、한국어, etc. - Framework ready
+
+**Quick Start:**
+
+```bash
+# Chinese (automatic)
+omc --help
+# Output: 多代理编排系统，让 Claude Code 更强大
+
+# English
+LANG=en_US.UTF-8 omc --help
+# Output: Multi-agent orchestration system for Claude Agent SDK
+```
+
+**Features:**
+- ✅ Automatic language detection
+- ✅ Dynamic language switching
+- ✅ **Completely FREE translation** (no API keys required!)
+- ✅ Auto-sync from upstream updates
+
+**For Fork Maintainers:**
+
+Automatically translate new strings from upstream:
+
+```bash
+# Install Git hook (one-time)
+cp hooks/post-merge .git/hooks/
+chmod +x .git/hooks/post-merge
+
+# Sync and translate
+npm run i18n:sync    # Detect new strings
+npm run i18n:apply   # Apply free translations
+```
+
+**Documentation:**
+- [i18n Quick Start](docs/i18n-free-quickstart.md) - 5 minute guide
+- [Free Translation Guide](docs/i18n-free-translation.md) - Complete docs
+- [Translation Demo](docs/i18n-demo-results.md) - See results
 
 ### OpenClaw Integration
 

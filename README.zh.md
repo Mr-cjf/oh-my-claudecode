@@ -1,14 +1,13 @@
-[English](README.md) | [한국어](README.ko.md) | 中文 | [日本語](README.ja.md) | [Español](README.es.md) | [Tiếng Việt](README.vi.md) | [Português](README.pt.md)
+[English](README.md) | 中文
 
 # oh-my-claudecode
 
 [![npm version](https://img.shields.io/npm/v/oh-my-claude-sisyphus?color=cb3837)](https://www.npmjs.com/package/oh-my-claude-sisyphus)
 [![npm downloads](https://img.shields.io/npm/dm/oh-my-claude-sisyphus?color=blue)](https://www.npmjs.com/package/oh-my-claude-sisyphus)
-[![GitHub stars](https://img.shields.io/github/stars/Yeachan-Heo/oh-my-claudecode?style=flat&color=yellow)](https://github.com/Yeachan-Heo/oh-my-claudecode/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/Mr-cjf/oh-my-claudecode?style=flat&color=yellow)](https://github.com/Mr-cjf/oh-my-claudecode/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Sponsor](https://img.shields.io/badge/Sponsor-❤️-red?style=flat&logo=github)](https://github.com/sponsors/Yeachan-Heo)
 
-> **Codex 用户：** 查看 [oh-my-codex](https://github.com/Yeachan-Heo/oh-my-codex) — 为 OpenAI Codex CLI 提供同样的编排体验。
+> **Fork 自 [oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode)** - 增强了 i18n 支持（免费翻译、多语言）
 
 **Claude Code 的多智能体编排系统。零学习曲线。**
 
@@ -22,7 +21,7 @@
 
 **第一步：安装**
 ```bash
-/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
+/plugin marketplace add https://github.com/Mr-cjf/oh-my-claudecode
 /plugin install oh-my-claudecode
 ```
 
@@ -290,6 +289,54 @@ omc config-stop-callback discord --clear-tags
 | `OPENCLAW_REPLY_THREAD` | 线程 ID |
 
 参见 `scripts/openclaw-gateway-demo.mjs`，这是一个通过 ClawdBot 将 OpenClaw 有效载荷转发到 Discord 的参考网关。
+
+---
+
+## 🌐 国际化支持
+
+OMC 现已支持多语言！CLI 输出自动适配你的系统语言。
+
+**支持的语言：**
+- 🇨🇳 简体中文 - 完整支持
+- 🇺🇸 English (en) - 完整支持
+- 📋 日本語、한국어 等 - 框架就绪
+
+**快速开始：**
+
+```bash
+# 中文（自动）
+omc --help
+# 输出：多代理编排系统，让 Claude Code 更强大
+
+# 英文
+LANG=en_US.UTF-8 omc --help
+# 输出：Multi-agent orchestration system for Claude Agent SDK
+```
+
+**功能特性：**
+- ✅ 自动语言检测
+- ✅ 动态语言切换
+- ✅ **完全免费翻译**（无需 API Key！）
+- ✅ 自动同步上游更新
+
+**对于 Fork 维护者：**
+
+自动翻译上游的新字符串：
+
+```bash
+# 安装 Git hook（一次性）
+cp hooks/post-merge .git/hooks/
+chmod +x .git/hooks/post-merge
+
+# 同步和翻译
+npm run i18n:sync    # 检测新字符串
+npm run i18n:apply   # 应用免费翻译
+```
+
+**文档：**
+- [i18n 快速开始](docs/i18n-free-quickstart.md) - 5 分钟指南
+- [免费翻译指南](docs/i18n-free-translation.md) - 完整文档
+- [翻译效果展示](docs/i18n-demo-results.md) - 查看效果
 
 ---
 

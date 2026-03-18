@@ -1,0 +1,309 @@
+{
+  "cli": {
+    "name": "omc",
+    "description": "多代理编排系统，让 Claude Code 更强大",
+    "help": {
+      "usage": "用法: omc <命令> [选项]",
+      "commands": "命令:",
+      "options": "选项:",
+      "examples": "示例:"
+    },
+    "launch": {
+      "description": "启动带有原生 tmux 集成的 Claude Code",
+      "examples": {
+        "basic": "启动 Claude Code",
+        "madmax": "以权限绕过模式启动",
+        "yolo": "以权限绕过模式启动 (别名)",
+        "notifyFalse": "启动但禁用 CCNotifier 事件",
+        "explicit": "显式启动子命令 (等同于直接运行 omc)"
+      },
+      "options": {
+        "notify": "启用/禁用 CCNotifier 事件。false 会设置 OMC_NOTIFY=0 并抑制所有 stop/session-start/session-idle 通知。默认: true"
+      },
+      "env": {
+        "notify": "抑制所有通知 (通过 --notify false 设置)"
+      }
+    },
+    "interop": {
+      "description": "启动带有 Claude Code (OMC) 和 Codex (OMX) 的分屏 tmux 会话",
+      "requirements": {
+        "tmux": "必须在 tmux 会话中运行",
+        "claude": "必须安装 Claude CLI",
+        "codex": "推荐安装 Codex CLI (未安装也可正常运行)"
+      }
+    },
+    "ask": {
+      "description": "运行提供商顾问提示并生成请求工件"
+    },
+    "config": {
+      "description": "显示当前配置",
+      "validate": "验证配置",
+      "paths": "显示配置文件路径",
+      "examples": {
+        "show": "显示当前配置",
+        "validate": "验证配置文件",
+        "paths": "显示配置文件位置"
+      },
+      "pathsHeader": "配置文件路径:",
+      "user": "用户:",
+      "project": "项目:",
+      "fileStatus": "文件状态:",
+      "exists": "存在",
+      "notFound": "未找到",
+      "validating": "正在验证配置...",
+      "errors": "错误:",
+      "warnings": "警告:",
+      "valid": "配置有效！",
+      "current": "当前配置:",
+      "stopCallback": {
+        "description": "配置停止钩子回调 (file/telegram/discord/slack)",
+        "types": {
+          "file": "文件系统回调 (将会话摘要保存到磁盘)",
+          "telegram": "Telegram 机器人通知",
+          "discord": "Discord webhook 通知",
+          "slack": "Slack incoming webhook 通知"
+        },
+        "profileTypes": {
+          "discord-bot": "Discord Bot API (token + channel ID)",
+          "slack": "Slack incoming webhook",
+          "webhook": "通用 webhook (POST JSON 数据)"
+        },
+        "profile": "命名通知配置文件",
+        "show": "显示当前配置",
+        "enable": "启用回调",
+        "disable": "禁用回调",
+        "path": "文件路径 (支持 {session_id}, {date}, {time})",
+        "format": "文件格式: markdown | json",
+        "token": "Bot token (telegram 或 discord-bot)",
+        "chat": "Telegram chat ID",
+        "webhook": "Discord webhook URL",
+        "channelId": "Discord bot channel ID (与 --profile 一起使用)",
+        "tagList": "替换标签列表 (逗号分隔, 仅 telegram/discord)",
+        "addTag": "添加一个标签 (仅 telegram/discord)",
+        "removeTag": "移除一个标签 (仅 telegram/discord)",
+        "clearTags": "清除所有标签 (仅 telegram/discord)",
+        "profileConfig": "配置:",
+        "noPlatform": "在配置文件 \"{{profile}}\" 中未配置 {{platform}} 平台。",
+        "profileNotFound": "未找到配置文件 \"{{profile}}\"。",
+        "invalidType": "无效的配置文件类型: {{type}}",
+        "validTypes": "有效类型: {{types}}"
+      }
+    },
+    "setup": {
+      "description": "同步 OMC 钩子、代理和技能到 Claude Code",
+      "syncing": "正在同步 OMC 组件...",
+      "success": "OMC 设置完成！",
+      "failed": "设置失败: {{error}}"
+    },
+    "version": {
+      "checking": "正在检查更新...",
+      "current": "当前版本: {{version}}",
+      "latest": "最新版本: {{version}}",
+      "upToDate": "OMC 已是最新版本！",
+      "updateAvailable": "有可用更新: {{current}} → {{latest}}",
+      "updateNow": "运行 'omc update' 进行更新",
+      "updating": "正在更新 OMC...",
+      "updateSuccess": "OMC 更新成功！",
+      "updateFailed": "更新失败: {{error}}"
+    },
+    "doctor": {
+      "description": "运行诊断并检查问题",
+      "checking": "正在运行 OMC 诊断...",
+      "passed": "所有检查通过！",
+      "failed": "部分检查失败:",
+      "warnings": "警告:",
+      "info": "信息:",
+      "checks": {
+        "config": "配置",
+        "env": "环境变量",
+        "hooks": "OMC 钩子",
+        "agents": "OMC 代理",
+        "skills": "OMC 技能",
+        "tmux": "tmux 可用性",
+        "node": "Node.js 版本",
+        "npm": "npm 版本"
+      },
+      "status": {
+        "ok": "正常",
+        "warning": "警告",
+        "error": "错误",
+        "missing": "缺失",
+        "invalid": "无效",
+        "outdated": "过期"
+      }
+    },
+    "errors": {
+      "notFound": "未找到命令: {{command}}",
+      "invalidOption": "无效选项: {{option}}",
+      "missingArg": "缺少必需参数: {{arg}}",
+      "configNotFound": "未找到配置文件",
+      "configInvalid": "配置无效: {{message}}",
+      "envNotSet": "{{env}} 环境变量未设置",
+      "exaEnabled": "Exa 已启用但 EXA_API_KEY 未设置",
+      "discordRequiresWebhook": "Discord 需要 --webhook <webhook_url>",
+      "telegramRequiresToken": "Telegram 需要 --token <token>",
+      "telegramRequiresChat": "Telegram 需要 --chat <chat_id>",
+      "slackRequiresWebhook": "Slack 需要 --webhook <webhook_url>",
+      "fileRequiresPath": "文件回调需要 --path <path>",
+      "operationFailed": "操作失败: {{reason}}",
+      "general": "错误: {{message}}"
+    },
+    "success": {
+      "operationComplete": "操作成功完成",
+      "configSaved": "配置已保存",
+      "callbackEnabled": "{{type}} 回调已启用",
+      "callbackDisabled": "{{type}} 回调已禁用"
+    },
+    "demo": {
+      "welcome": "欢迎来到OMC ！",
+      "teamStarted": "启动成功",
+      "agentActive": "客服代表现已激活",
+      "configValid": "配置验证成功",
+      "operationComplete": "操作完成"
+    }
+  },
+  "hud": {
+    "status": {
+      "running": "运行中",
+      "idle": "空闲",
+      "error": "错误",
+      "waiting": "等待中",
+      "active": "活跃"
+    },
+    "agents": {
+      "active": "活跃代理: {{count}}个",
+      "none": "无活跃代理",
+      "list": "代理列表",
+      "status": "状态",
+      "model": "模型"
+    },
+    "tokens": {
+      "used": "已用: {{used}}",
+      "remaining": "剩余: {{remaining}}",
+      "total": "总计: {{total}}",
+      "percentage": "{{percent}}%"
+    },
+    "context": {
+      "used": "上下文: {{used}}/{{total}}",
+      "percentage": "已用 {{percent}}%",
+      "warning": "上下文限制警告: {{percent}}%"
+    },
+    "limits": {
+      "rateLimit": "速率限制",
+      "requests": "请求数: {{used}}/{{limit}}",
+      "tokens": "Token数: {{used}}/{{limit}}",
+      "resetIn": "重置于: {{time}}",
+      "exceeded": "已超出速率限制"
+    },
+    "session": {
+      "id": "会话: {{id}}",
+      "duration": "时长: {{time}}",
+      "started": "开始于: {{time}}"
+    },
+    "git": {
+      "repo": "仓库: {{name}}",
+      "branch": "分支: {{name}}",
+      "dirty": " (有改动)",
+      "clean": " (干净)"
+    },
+    "model": {
+      "current": "模型: {{model}}",
+      "default": "默认",
+      "custom": "自定义"
+    },
+    "cwd": {
+      "current": "当前目录: {{path}}"
+    },
+    "skills": {
+      "active": "技能",
+      "lastUsed": "最近: {{skill}}",
+      "none": "无技能"
+    },
+    "todos": {
+      "pending": "待办: {{count}}项",
+      "completed": "已完成: {{count}}项",
+      "none": "无待办"
+    },
+    "thinking": {
+      "budget": "思考预算: {{used}}/{{total}}",
+      "remaining": "思考: 剩余 {{remaining}}"
+    },
+    "permission": {
+      "mode": "权限: {{mode}}",
+      "bypass": "绕过",
+      "standard": "标准"
+    },
+    "autopilot": {
+      "mode": "自动驾驶",
+      "active": "激活",
+      "inactive": "未激活"
+    },
+    "prompt": {
+      "time": "提示时间: {{time}}",
+      "pending": "待处理提示: {{count}}个"
+    },
+    "background": {
+      "jobs": "后台任务: {{count}}个",
+      "running": "{{count}}个运行中",
+      "completed": "{{count}}个已完成"
+    },
+    "mission": {
+      "board": "任务面板",
+      "active": "活跃任务: {{count}}个",
+      "none": "无活跃任务"
+    },
+    "prd": {
+      "active": "PRD 激活",
+      "none": "无 PRD"
+    },
+    "ralph": {
+      "mode": "Ralph 模式",
+      "active": "激活",
+      "inactive": "未激活"
+    }
+  },
+  "notifications": {
+    "success": "操作成功",
+    "failed": "操作失败: {{reason}}",
+    "sessionStart": "会话已开始",
+    "sessionStop": "会话已停止",
+    "sessionIdle": "会话空闲",
+    "error": "错误: {{message}}",
+    "warning": "警告: {{message}}",
+    "info": "信息: {{message}}"
+  },
+  "common": {
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "yes": "是",
+    "no": "否",
+    "on": "开",
+    "off": "关",
+    "loading": "加载中...",
+    "saving": "保存中...",
+    "done": "完成",
+    "cancel": "取消",
+    "retry": "重试",
+    "continue": "继续",
+    "skip": "跳过",
+    "none": "无",
+    "all": "全部",
+    "default": "默认",
+    "custom": "自定义",
+    "unknown": "未知",
+    "required": "必需",
+    "optional": "可选",
+    "recommended": "推荐",
+    "deprecated": "已弃用"
+  },
+  "time": {
+    "seconds": "{{count}} 秒",
+    "seconds_plural": "{{count}} 秒",
+    "minutes": "{{count}} 分钟",
+    "minutes_plural": "{{count}} 分钟",
+    "hours": "{{count}} 小时",
+    "hours_plural": "{{count}} 小时",
+    "days": "{{count}} 天",
+    "days_plural": "{{count}} 天"
+  }
+}
