@@ -8,7 +8,7 @@
  */
 
 import { glob } from 'glob';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import chalk from 'chalk';
@@ -238,7 +238,8 @@ async function syncTranslations() {
   }
 
   // Generate report
-  const reportPath = join(ROOT_DIR, '.omc/i18n-sync-report.json');
+  const reportDir = join(ROOT_DIR, '.omc');
+  const reportPath = join(reportDir, 'i18n-sync-report.json');
   const report = {
     timestamp: new Date().toISOString(),
     newStringsCount: newStrings.length,
@@ -246,6 +247,10 @@ async function syncTranslations() {
     files: Array.from(byFile.keys())
   };
 
+  // Ensure .omc directory exists
+  if (!existsSync(reportDir)) {
+    mkdirSync(reportDir, { recursive: true });
+  }
   writeFileSync(reportPath, JSON.stringify(report, null, 2));
   console.log(chalk.blue(`\n📄 Report saved to: ${reportPath}\n`));
 
