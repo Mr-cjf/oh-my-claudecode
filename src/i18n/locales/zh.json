@@ -1,5 +1,16 @@
 {
   "cli": {
+    "1": {
+      "run": "1.运行\\"
+    },
+    "2": {
+      "type": "2.类型\\"
+    },
+    "3": {
+      "or": {
+        "use": "3.或使用\\"
+      }
+    },
     "name": "omc",
     "description": "多代理编排系统，让 Claude Code 更强大",
     "help": {
@@ -30,6 +41,14 @@
         "tmux": "必须在 tmux 会话中运行",
         "claude": "必须安装 Claude CLI",
         "codex": "推荐安装 Codex CLI (未安装也可正常运行)"
+      },
+      "send": {
+        "task": "- interop_send_task ：在工具之间发送任务",
+        "message": "- interop_send_message ：发送消息"
+      },
+      "read": {
+        "results": "- interop_read_results ：查看任务结果",
+        "messages": "- interop_read_messages ：阅读消息"
       }
     },
     "ask": {
@@ -93,7 +112,8 @@
       "description": "同步 OMC 钩子、代理和技能到 Claude Code",
       "syncing": "正在同步 OMC 组件...",
       "success": "OMC 设置完成！",
-      "failed": "设置失败: {{error}}"
+      "failed": "设置失败: {{error}}",
+      "complete": "安装完成！"
     },
     "version": {
       "checking": "正在检查更新...",
@@ -160,6 +180,627 @@
       "agentActive": "客服代表现已激活",
       "configValid": "配置验证成功",
       "operationComplete": "操作完成"
+    },
+    "omc": {
+      "features": {
+        "that": "需要TMUX的OMC功能将不起作用。"
+      },
+      "error": {
+        "claude": "[omc]错误：未找到claude CLI。首先安装Claude Code ：",
+        "already": "[omc]错误：已在Claude Code会话中。不支持嵌套启动。"
+      },
+      "is": {
+        "already": "已安装"
+      },
+      "task": {
+        "activate": "/omc <task>              #激活OMC编排模式"
+      },
+      "default": {
+        "configure": "/omc-default #为当前项目配置",
+        "global": "/omc-default-global #全局配置"
+      },
+      "teleport": {
+        "ref": "omc teleport<ref>为问题/公关/功能创建工作树",
+        "list": "omc传送列表列出现有工作树",
+        "remove": "omc teleport remove<path>删除工作树"
+      },
+      "wait": {
+        "start": "omc wait --start",
+        "daemon": "omc wait daemon start"
+      }
+    },
+    "install": {
+      "psmux": {
+        "for": "安装psmux for native Windows tmux支持： winget install psmux"
+      },
+      "oh": {
+        "my": "安装oh-my-codex以启用分割窗格互操作模式。"
+      },
+      "omc": {
+        "agents": "将OMC代理和命令安装到Claude Code配置(~/.claude/)"
+      },
+      "tmux": {
+        "to": "安装tmux以使用会话检测和自动恢复",
+        "for": "安装tmux以实现自动恢复功能"
+      }
+    },
+    "or": {
+      "use": {
+        "wsl2": "或使用WSL2 ： https://learn.microsoft.com/en-us/windows/wsl/install"
+      },
+      "omc": {
+        "wait": "(or: omc wait daemon start)\\ n"
+      }
+    },
+    "npm": {
+      "install": {
+        "g": "npm install -g @ anthropic-ai/claude-code"
+      }
+    },
+    "refusing": {
+      "to": {
+        "start": "拒绝在无效标志配置中启动互操作。"
+      }
+    },
+    "error": {
+      "tmux": {
+        "is": "错误： tmux不可用。安装tmux以使用互操作模式。"
+      },
+      "claude": {
+        "cli": "错误： CLAUDE CLI不可用。首先安装Claude Code CLI。"
+      },
+      "interop": {
+        "mode": "错误：互操作模式需要在tmux会话中运行。"
+      },
+      "failed": {
+        "to": "错误：无法获取当前tmux窗格ID"
+      },
+      "invalid": {
+        "tmux": "错误： tmux窗格ID格式无效"
+      },
+      "creating": {
+        "split": "创建拆分窗格时出错："
+      }
+    },
+    "warning": {
+      "codex": {
+        "cli": "警告： codex CLI不可用。将仅启动Claude Code。"
+      }
+    },
+    "start": {
+      "tmux": {
+        "first": "首先启动tmux ： tmux new-session -s myproject"
+      },
+      "or": {
+        "stop": "启动或停止自动恢复守护进程"
+      },
+      "claude": {
+        "code": "启动Claude Code并使用/oh-my-claudecode: omc-setup进行交互式设置。"
+      }
+    },
+    "splitting": {
+      "pane": {
+        "left": "拆分窗格：左（ Claude Code ） |右（ Codex ）"
+      }
+    },
+    "ninterop": {
+      "session": {
+        "ready": "\\ n Interop会话准备就绪！"
+      }
+    },
+    "left": {
+      "pane": {
+        "claude": "-左窗格： Claude Code （此航站楼）"
+      }
+    },
+    "right": {
+      "pane": {
+        "codex": "-右窗格： Codex CLI"
+      }
+    },
+    "nyou": {
+      "can": {
+        "now": "\\ n您现在可以使用互操作MCP工具在两者之间进行通信："
+      }
+    },
+    "nclaude": {
+      "code": {
+        "is": "\\ n克劳德代码已在此窗格中准备就绪。"
+      }
+    },
+    "ninstall": {
+      "npm": {
+        "install": "\\ n安装： npm install -g @ openai/codex"
+      }
+    },
+    "discord": {
+      "bot": {
+        "requires": "Discord智能小助手需要--channel-id <channel_id>"
+      }
+    },
+    "webhook": {
+      "requires": {
+        "webhook": "Webhook需要--webhook <url>"
+      }
+    },
+    "file": {
+      "callbacks": {
+        "are": "通知配置文件中不支持文件回调。"
+      }
+    },
+    "use": {
+      "without": {
+        "profile": "对文件回调使用without --profile。"
+      }
+    },
+    "failed": {
+      "to": {
+        "write": "写入配置失败："
+      }
+    },
+    "telegram": {
+      "requires": {
+        "token": "Telegram需要--token <bot_token>"
+      }
+    },
+    "manage": {
+      "notification": {
+        "profiles": "管理通知配置文件"
+      }
+    },
+    "no": {
+      "notification": {
+        "profiles": "未配置通知配置文件。"
+      },
+      "installation": {
+        "metadata": "未找到安装元数据"
+      },
+      "worktrees": {
+        "found": "未找到工作树。"
+      }
+    },
+    "create": {
+      "one": {
+        "with": "创建一个： omc config-stop-callback <type> --profile <name> --enable..."
+      }
+    },
+    "notification": {
+      "profiles": "通知配置文件："
+    },
+    "enabled": "启用",
+    "disabled": "禁用",
+    "show": {
+      "system": {
+        "and": "显示系统和代理信息"
+      },
+      "detailed": {
+        "version": "显示详细版本信息",
+        "rate": "显示详细的速率限制和守护进程状态"
+      }
+    },
+    "navailable": {
+      "agents": "\\ n可用客服代表："
+    },
+    "nenabled": {
+      "features": "\\ n已启用的功能："
+    },
+    "nmcp": {
+      "servers": "\\ nMCP服务器："
+    },
+    "nmagic": {
+      "keywords": "\\ n魔术关键词："
+    },
+    "test": {
+      "how": {
+        "a": "测试如何增强提示"
+      }
+    },
+    "original": {
+      "prompt": "原始提示："
+    },
+    "ndetected": {
+      "magic": {
+        "keywords": "\\ n检测到的魔术关键词："
+      }
+    },
+    "nenhanced": {
+      "prompt": "\\ n增强提示："
+    },
+    "check": {
+      "for": {
+        "and": "检查并安装更新",
+        "plugin": "检查插件共存问题和配置冲突"
+      }
+    },
+    "oh": {
+      "my": {
+        "claudecode": "✓ Oh-My-ClaudeCode安装成功！"
+      }
+    },
+    "nrun": {
+      "without": {
+        "check": "\\ n不使用--check运行以安装更新。"
+      }
+    },
+    "nstarting": {
+      "update": {
+        "n": "\\ n正在开始更新...\\ n"
+      }
+    },
+    "nplease": {
+      "restart": {
+        "your": "\\ n请重新启动Claude Code会话以使用新版本。"
+      }
+    },
+    "internal": {
+      "reconcile": {
+        "runtime": "内部：更新后协调运行时状态（由UPDATE命令调用）"
+      }
+    },
+    "reconciliation": {
+      "failed": "对账失败："
+    },
+    "run": "运行：",
+    "nto": {
+      "check": {
+        "for": "\\ n要检查更新，请运行： oh-my-claudecode update --check"
+      }
+    },
+    "": "╚═══════════════════════════════════════════════════════════╝",
+    "multi": {
+      "agent": {
+        "orchestration": "Claude Code的多║代理编排               ║"
+      }
+    },
+    "nuse": {
+      "force": {
+        "to": "\\ n使用--force重新安装。"
+      }
+    },
+    "installation": {
+      "complete": "安装完成！"
+    },
+    "installed": {
+      "to": {
+        "claude": "安装到: ~/.claude/"
+      }
+    },
+    "usage": "按用法",
+    "claude": {
+      "start": {
+        "claude": "claude #正常启动Claude Code"
+      }
+    },
+    "slash": {
+      "commands": "斜杠命令："
+    },
+    "ultrawork": {
+      "task": {
+        "maximum": "/ultrawork <task>             #最高性能模式"
+      }
+    },
+    "deepsearch": {
+      "query": {
+        "thorough": "/deepsearch <query>           #彻底的代码库搜索"
+      }
+    },
+    "analyze": {
+      "target": {
+        "deep": "/analyze <target>             #深度分析模式"
+      }
+    },
+    "plan": {
+      "description": {
+        "start": "/plan <description>           #使用Planner开始规划"
+      }
+    },
+    "review": {
+      "plan": {
+        "path": "/review [plan-path] #与批评者一起审查计划"
+      }
+    },
+    "available": "可用",
+    "base": {
+      "agents": "基础药剂："
+    },
+    "architect": {
+      "architecture": {
+        "debugging": "建筑师-建筑与调试（ OPUS ）"
+      },
+      "medium": {
+        "simpler": "architect-medium -更简单的分析（十四行诗）"
+      },
+      "low": {
+        "quick": "architect-low -快速提问（俳句）"
+      }
+    },
+    "document": {
+      "specialist": {
+        "external": "document-specialist -外部文档和参考查找（十四行诗）"
+      }
+    },
+    "explore": {
+      "fast": {
+        "pattern": "探索-快速模式匹配（俳句）"
+      }
+    },
+    "designer": {
+      "ui": {
+        "ux": "设计师- UI/UX专员（十四行诗）"
+      },
+      "high": {
+        "design": "designer-high -设计系统（ Opus ）"
+      },
+      "low": {
+        "simple": "designer-low -简约造型（俳句）"
+      }
+    },
+    "writer": {
+      "technical": {
+        "writing": "作家-技术写作（俳句）"
+      }
+    },
+    "vision": {
+      "visual": {
+        "analysis": "视觉-视觉分析（十四行诗）"
+      }
+    },
+    "critic": {
+      "plan": {
+        "review": "critic - Plan review (Opus)"
+      }
+    },
+    "analyst": {
+      "pre": {
+        "planning": "分析师-预先计划分析（ OPUS ）"
+      }
+    },
+    "debugger": {
+      "root": {
+        "cause": "调试器-根本原因诊断（十四行诗）"
+      }
+    },
+    "executor": {
+      "focused": {
+        "execution": "执行者-集中执行（十四行诗）"
+      },
+      "high": {
+        "complex": "executor-high -复杂任务（ Opus ）"
+      },
+      "low": {
+        "trivial": "executor-low -琐碎的任务（ Haiku ）"
+      }
+    },
+    "planner": {
+      "strategic": {
+        "planning": "规划师-战略规划（ OPUS ）"
+      }
+    },
+    "qa": {
+      "tester": {
+        "interactive": "qa-tester -交互式CLI测试（ Sonnet ）"
+      }
+    },
+    "tiered": {
+      "variants": {
+        "for": "分层变体（用于智能路由） ："
+      }
+    },
+    "after": {
+      "updates": "更新后："
+    },
+    "to": {
+      "download": {
+        "the": "下载最新的CLAUDE.md配置。"
+      },
+      "start": {
+        "working": "参加工作时间"
+      }
+    },
+    "this": {
+      "ensures": {
+        "you": "这可确保您获得最新的功能和客服代表行为。"
+      }
+    },
+    "quick": {
+      "start": "快速开始:"
+    },
+    "example": {
+      "omc": {
+        "wait": "示例： omc wait daemon start"
+      }
+    },
+    "scan": {
+      "for": {
+        "blocked": "扫描tmux中被阻止的Claude Code会话"
+      }
+    },
+    "teleport": {
+      "quick": {
+        "worktree": "传送-快速创建工作树\\ n"
+      }
+    },
+    "reference": {
+      "formats": "参考格式："
+    },
+    "owner": {
+      "repo": {
+        "123": "特定回购中的所有者/回购# 123发行/公关"
+      }
+    },
+    "my": {
+      "feature": {
+        "feature": "my-feature功能分支名称"
+      }
+    },
+    "https": {
+      "github": {
+        "com": "https://github.com/... GitHub URL"
+      }
+    },
+    "list": {
+      "existing": {
+        "worktrees": "列出~/Workspace/omc-worktrees/中的现有工作树"
+      }
+    },
+    "remove": {
+      "a": {
+        "worktree": "移除工作树"
+      }
+    },
+    "inspect": {
+      "prior": {
+        "local": "检查之前的本地会话历史记录"
+      }
+    },
+    "search": {
+      "prior": {
+        "local": "搜索之前的本地会话记录和OMC会话制品"
+      }
+    },
+    "diagnostic": {
+      "tools": {
+        "for": "用于诊断OMC安装故障的诊断工具"
+      }
+    },
+    "hooks": {
+      "configured": "挂钩：已配置"
+    },
+    "hook": {
+      "conflicts": {
+        "detected": "检测到钩子冲突："
+      }
+    },
+    "could": {
+      "not": {
+        "complete": "⚠ 无法完成OMC设置："
+      }
+    },
+    "render": {
+      "the": {
+        "opt": "呈现当前工作区的选择加入任务板快照"
+      }
+    },
+    "team": {
+      "cli": {
+        "api": "用于员工生命周期操作的团队CLI API"
+      }
+    },
+    "n": {
+      "rate": {
+        "limit": "\\ n📊速率限制等待状态\\ n"
+      }
+    },
+    "unable": {
+      "to": {
+        "check": "?无法检查（没有OAuth凭据？ ）"
+      }
+    },
+    "rate": {
+      "limit": {
+        "monitoring": "速率限制监控需要Claude Pro/Max订阅。"
+      }
+    },
+    "brew": {
+      "install": {
+        "tmux": "brew install tmux (macOS)"
+      }
+    },
+    "apt": {
+      "install": {
+        "tmux": "apt install tmux (Linux)\\ n"
+      }
+    },
+    "want": {
+      "to": {
+        "auto": "💡 是否要在限额过后自动恢复？"
+      }
+    },
+    "auto": {
+      "resume": {
+        "daemon": "自动恢复守护进程正在运行（在不受速率限制时不需要）",
+        "sessions": "•当速率限制清除时自动恢复会话"
+      }
+    },
+    "your": {
+      "session": {
+        "will": "当限制清除时，您的会话将自动恢复。\\ n"
+      }
+    },
+    "blocked": {
+      "panes": {
+        "can": "如果检测到被阻止的窗格，仍然可以被跟踪。\\ n"
+      }
+    },
+    "not": {
+      "rate": {
+        "limited": "✓ 不受费率限制"
+      },
+      "running": "正在运行",
+      "installed": "未安装"
+    },
+    "stop": {
+      "with": {
+        "omc": "停止方式： omc wait --stop\\ n"
+      }
+    },
+    "nrate": {
+      "limits": "\\ n速率限制："
+    },
+    "ndaemon": "\\ n后台程序：",
+    "never": {
+      "started": "不开始"
+    },
+    "ntmux": "\\ ntmux ：",
+    "currently": {
+      "inside": {
+        "tmux": "当前在tmux会话中"
+      }
+    },
+    "nthe": {
+      "daemon": {
+        "will": "\\ n后台程序将："
+      }
+    },
+    "poll": {
+      "rate": {
+        "limit": "•每分钟轮询速率限制状态"
+      }
+    },
+    "track": {
+      "blocked": {
+        "claude": "•在tmux中跟踪被阻止的Claude Code会话"
+      }
+    },
+    "tmux": {
+      "is": {
+        "not": "⚠ tmux未安装"
+      }
+    },
+    "scanning": {
+      "for": {
+        "blocked": "正在扫描被阻止的Claude Code会话...\\ n"
+      }
+    },
+    "ntip": {
+      "start": {
+        "the": "\\ n提示：当速率限制清除时，启动守护进程以自动恢复："
+      }
+    },
+    "ncurrent": {
+      "rate": {
+        "limit": "\\ n当前速率限制："
+      }
+    },
+    "worktree": {
+      "created": {
+        "successfully": "已成功创建工作树！"
+      }
+    },
+    "nomc": {
+      "worktrees": {
+        "n": "\\ nOMC工作树：\\ n"
+      }
     }
   },
   "hud": {
@@ -260,6 +901,41 @@
       "mode": "Ralph 模式",
       "active": "激活",
       "inactive": "未激活"
+    },
+    "usage": {
+      "api": {
+        "anthropic": "[usage-api] Anthropic API返回429 （速率限制）",
+        "z": "[usage-api] z.ai API返回429 （速率受限）",
+        "failed": "[usage-api]无法写回刷新的凭据"
+      }
+    },
+    "hud": {
+      "failed": {
+        "to": "[HUD]写入配置失败："
+      },
+      "version": {
+        "detection": "[HUD]版本检测错误："
+      },
+      "update": {
+        "cache": "[HUD]更新缓存读取错误："
+      },
+      "auto": {
+        "compact": "[HUD]自动压缩触发器写入错误："
+      }
+    },
+    "omc": {
+      "starting": "[OMC]正在启动...",
+      "run": {
+        "omc": "[OMC]运行/omc-setup以正确安装"
+      },
+      "hud": {
+        "error": "[OMC] HUD错误-检查stderr"
+      }
+    },
+    "custom": {
+      "rate": {
+        "provider": "[custom-rate-provider]命令的输出格式无效"
+      }
     }
   },
   "notifications": {
@@ -270,7 +946,12 @@
     "sessionIdle": "会话空闲",
     "error": "错误: {{message}}",
     "warning": "警告: {{message}}",
-    "info": "信息: {{message}}"
+    "info": "信息: {{message}}",
+    "reply": {
+      "listener": {
+        "fatal": "[reply-listener]致命："
+      }
+    }
   },
   "common": {
     "enabled": "已启用",
@@ -305,5 +986,314 @@
     "hours_plural": "{{count}} 小时",
     "days": "{{count}} 天",
     "days_plural": "{{count}} 天"
+  },
+  "utils": {
+    "ssrf": {
+      "guard": {
+        "warning": "[SSRF Guard]警告：对ANTHROPIC_BASE_URL使用HTTP而不是HTTPS"
+      }
+    }
+  },
+  "team": {
+    "watchdog": {
+      "tick": {
+        "error": "[WATCHDOG]勾选错误："
+      }
+    },
+    "usage": {
+      "node": {
+        "bridge": "用法： node bridge-entry.js --config <path-to-config.json>"
+      }
+    },
+    "permissions": {
+      "allowedpaths": {
+        "must": "permissions.allowedPaths必须是字符串数组"
+      },
+      "deniedpaths": {
+        "must": "permissions.deniedPaths必须是字符串数组"
+      },
+      "allowedcommands": {
+        "must": "permissions.allowedCommands必须是字符串数组"
+      }
+    }
+  },
+  "openclaw": {
+    "openclaw": {
+      "wakeopenclaw": {
+        "error": "[openclaw] wakeOpenClaw错误："
+      }
+    }
+  },
+  "mcp": {
+    "omc": {
+      "team": {
+        "mcp": "在stdio上运行的OMC团队MCP服务器"
+      },
+      "tools": {
+        "mcp": "在stdio上运行的OMC工具MCP服务器"
+      }
+    },
+    "failed": {
+      "to": {
+        "start": "无法启动 HTTP 服务器"
+      }
+    },
+    "mcp": {
+      "config": {
+        "warning": "[MCP配置]警告：启用OMC_MCP_ALLOW_EXTERNAL_PROMPT。允许工作目录之外的外部提示文件。这可能会带来安全风险。"
+      }
+    }
+  },
+  "lib": {
+    "worktree": {
+      "non": {
+        "git": "[worktree]提供了非git目录，回退到进程根目录"
+      },
+      "workingdirectory": {
+        "resolved": "[worktree] workingDirectory已使用受信任的根目录解析为不同的git工作树根目录"
+      }
+    },
+    "job": {
+      "state": {
+        "db": "[job-state-db]无法获取作业统计信息："
+      }
+    },
+    "run": {
+      "npm": {
+        "run": "运行： npm run sync-featured-contributors"
+      }
+    }
+  },
+  "installer": {
+    "omc": {
+      "hud": {
+        "plugin": "[OMC HUD]插件未安装。运行：/oh-my-claudecode: omc-setup"
+      }
+    }
+  },
+  "hooks": {
+    "usage": {
+      "node": {
+        "hook": "用法： node hook-bridge.mjs --hook =<type>"
+      }
+    },
+    "invalid": {
+      "hook": {
+        "argument": "无效的钩子参数格式：缺少钩子类型"
+      }
+    },
+    "hook": {
+      "bridge": {
+        "fatal": "[hook-bridge]致命错误："
+      }
+    },
+    "bridge": {
+      "normalize": {
+        "zod": "[bridge-normalize] ZOD验证警告："
+      }
+    },
+    "todo": {
+      "continuation": "[TODO-Continuation]"
+    },
+    "subagenttracker": {
+      "error": {
+        "reading": "[SubagentTracker]读取磁盘状态时出错：",
+        "writing": "[SubagentTracker]写入状态时出错：",
+        "clearing": "[SubagentTracker]清除状态时出错："
+      }
+    },
+    "stop": {
+      "callback": {
+        "file": "[stop-callback]文件写入失败：",
+        "telegram": "[stop-callback]电报发送失败：",
+        "discord": "[stop-callback] Discord发送失败：",
+        "callback": "[stop-callback]回调执行错误："
+      }
+    },
+    "failed": {
+      "to": {
+        "save": "保存项目内存失败："
+      }
+    },
+    "error": {
+      "in": {
+        "project": "项目内存PreCompact处理程序中出错："
+      },
+      "learning": {
+        "from": "从工具输出中学习时出错："
+      },
+      "adding": {
+        "custom": "添加自定义备注时出错："
+      },
+      "registering": {
+        "project": "注册项目内存上下文时出错："
+      }
+    },
+    "precompact": {
+      "error": {
+        "reading": "[PreCompact]读取作业状态数据库时出错：",
+        "saving": "[PreCompact]保存智慧时出错："
+      }
+    },
+    "learner": {
+      "error": {
+        "writing": "[学员]写入技能文件时出错：",
+        "scanning": "[学员]扫描目录时出错：",
+        "creating": "[学员]创建技能目录时出错：",
+        "loading": "[LEARNER]加载配置时出错：",
+        "saving": "[LEARNER]保存配置时出错："
+      },
+      "symlink": {
+        "escape": "[学员]已屏蔽Symlink逃生："
+      }
+    },
+    "auto": {
+      "invoke": {
+        "failed": "[auto-invoke]无法获取聚合统计信息："
+      }
+    }
+  },
+  "features": {
+    "1": {
+      "testing": {
+        "resolvecategory": "1.测试resolveCategory () ："
+      }
+    },
+    "2": {
+      "testing": {
+        "isvalidcategory": "2.测试isValidCategory () ："
+      }
+    },
+    "3": {
+      "testing": {
+        "getcategorydescription": "3.测试getCategoryDescription () ："
+      }
+    },
+    "4": {
+      "testing": {
+        "detectcategoryfromprompt": "4.测试detectCategoryFromPrompt () ："
+      }
+    },
+    "5": {
+      "testing": {
+        "getcategoryfortask": "5.测试getCategoryForTask () ："
+      }
+    },
+    "6": {
+      "testing": {
+        "tier": "6.测试层提取："
+      }
+    },
+    "7": {
+      "testing": {
+        "enhancepromptwithcategory": "7.测试enhancePromptWithCategory () ："
+      }
+    },
+    "8": {
+      "testing": {
+        "backward": "8.测试与ComplexityTier的向后兼容性："
+      }
+    },
+    "error": {
+      "reading": {
+        "version": "读取版本文件时出错："
+      }
+    },
+    "background": {
+      "update": {
+        "check": "背景更新检查失败："
+      }
+    },
+    "starting": {
+      "update": {
+        "n": "开始更新..."
+      }
+    },
+    "nplease": {
+      "restart": {
+        "your": "\\ n请重新启动Claude Code会话以使用新版本。"
+      }
+    },
+    "update": {
+      "check": {
+        "failed": "更新检查失败："
+      }
+    },
+    "tmuxdetector": {
+      "error": {
+        "listing": "[TmuxDetector]列出窗格时出错："
+      }
+    },
+    "ratelimitmonitor": {
+      "error": {
+        "checking": "[RateLimitMonitor]检查速率限制时出错："
+      }
+    },
+    "ratelimitdaemon": {
+      "tmux": {
+        "not": "[RateLimitDaemon] tmux不可用-恢复功能将受到限制"
+      }
+    },
+    "nshutting": {
+      "down": {
+        "daemon": "\\ n正在关闭后台程序..."
+      }
+    },
+    "rate": {
+      "limit": {
+        "wait": "在前台模式下启动的速率限制等待后台程序..."
+      }
+    },
+    "press": {
+      "ctrl": {
+        "c": "按Ctrl + C停止。\\ n"
+      }
+    },
+    "failed": {
+      "to": {
+        "initialize": "初始化计划记事本失败："
+      }
+    },
+    "omc": {
+      "codex": {
+        "gemini": "[OMC] Codex/Gemini MCP委托已弃用。使用/team来协调CLI工作人员。"
+      }
+    },
+    "delegation": {
+      "categories": {
+        "test": "= = =委派类别测试= = =\\ n"
+      }
+    },
+    "categories": {
+      "map": {
+        "to": "类别映射到会员等级："
+      }
+    },
+    "all": {
+      "tests": {
+        "completed": "= = =所有测试均已完成= = ="
+      }
+    }
+  },
+  "commands": {
+    "error": {
+      "listing": {
+        "commands": "列出命令时出错："
+      }
+    }
+  },
+  "agents": {
+    "prompt": {
+      "injection": {
+        "critical": "[prompt-injection]关键：无法扫描代理/目录以进行角色发现："
+      }
+    }
+  },
+  "tools": {
+    "lsp": {
+      "response": {
+        "buffer": "[LSP]响应缓冲区超过50MB限制，正在重置"
+      }
+    }
   }
 }
