@@ -127,6 +127,7 @@ jobs:
             '*This PR was created by the [i18n auto-sync workflow](.github/workflows/i18n-auto-sync.yml)*' \
             > /tmp/pr-body.md
           gh pr create \
+            --head "$BRANCH_NAME" \
             --title "i18n: Auto-translate ${{ steps.check.outputs.new_count }} new strings" \
             --body-file /tmp/pr-body.md \
             --label "i18n,automated" \
