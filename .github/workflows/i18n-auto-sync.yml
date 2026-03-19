@@ -130,7 +130,6 @@ jobs:
             --head "$BRANCH_NAME" \
             --title "i18n: Auto-translate ${{ steps.check.outputs.new_count }} new strings" \
             --body-file /tmp/pr-body.md \
-            --label "i18n,automated" \
             --base dev
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
