@@ -1,5 +1,16 @@
 {
   "cli": {
+    "1": {
+      "run": "[待翻译]   1. Run \\"
+    },
+    "2": {
+      "type": "[待翻译]   2. Type \\"
+    },
+    "3": {
+      "or": {
+        "use": "[待翻译]   3. Or use \\"
+      }
+    },
     "name": "omc",
     "description": "多代理编排系统，让 Claude Code 更强大",
     "help": {
@@ -30,6 +41,14 @@
         "tmux": "必须在 tmux 会话中运行",
         "claude": "必须安装 Claude CLI",
         "codex": "推荐安装 Codex CLI (未安装也可正常运行)"
+      },
+      "send": {
+        "task": "[待翻译] - interop_send_task: Send tasks between tools",
+        "message": "[待翻译] - interop_send_message: Send messages"
+      },
+      "read": {
+        "results": "[待翻译] - interop_read_results: Check task results",
+        "messages": "[待翻译] - interop_read_messages: Read messages"
       }
     },
     "ask": {
@@ -93,7 +112,8 @@
       "description": "同步 OMC 钩子、代理和技能到 Claude Code",
       "syncing": "正在同步 OMC 组件...",
       "success": "OMC 设置完成！",
-      "failed": "设置失败: {{error}}"
+      "failed": "设置失败: {{error}}",
+      "complete": "[待翻译] Setup complete!"
     },
     "version": {
       "checking": "正在检查更新...",
@@ -160,6 +180,627 @@
       "agentActive": "客服代表现已激活",
       "configValid": "配置验证成功",
       "operationComplete": "操作完成"
+    },
+    "omc": {
+      "features": {
+        "that": "[待翻译]    OMC features that require tmux will not work."
+      },
+      "error": {
+        "claude": "[待翻译] [omc] Error: claude CLI not found. Install Claude Code first:",
+        "already": "[待翻译] [omc] Error: Already inside a Claude Code session. Nested launches are not supported."
+      },
+      "is": {
+        "already": "[待翻译] OMC is already installed."
+      },
+      "task": {
+        "activate": "[待翻译]   /omc <task>              # Activate OMC orchestration mode"
+      },
+      "default": {
+        "configure": "[待翻译]   /omc-default             # Configure for current project",
+        "global": "[待翻译]   /omc-default-global      # Configure globally"
+      },
+      "teleport": {
+        "ref": "[待翻译]   omc teleport <ref>           Create worktree for issue/PR/feature",
+        "list": "[待翻译]   omc teleport list            List existing worktrees",
+        "remove": "[待翻译]   omc teleport remove <path>   Remove a worktree"
+      },
+      "wait": {
+        "start": "[待翻译] omc wait --start",
+        "daemon": "[待翻译]   omc wait daemon start"
+      }
+    },
+    "install": {
+      "psmux": {
+        "for": "[待翻译]    Install psmux for native Windows tmux support: winget install psmux"
+      },
+      "oh": {
+        "my": "[待翻译] Install oh-my-codex to enable split-pane interop mode."
+      },
+      "omc": {
+        "agents": "[待翻译] Install OMC agents and commands to Claude Code config (~/.claude/)"
+      },
+      "tmux": {
+        "to": "[待翻译] Install tmux to use session detection and auto-resume",
+        "for": "[待翻译]     Install tmux for auto-resume functionality"
+      }
+    },
+    "or": {
+      "use": {
+        "wsl2": "[待翻译]    Or use WSL2: https://learn.microsoft.com/en-us/windows/wsl/install"
+      },
+      "omc": {
+        "wait": "[待翻译]    (or: omc wait daemon start)\\n"
+      }
+    },
+    "npm": {
+      "install": {
+        "g": "[待翻译]   npm install -g @anthropic-ai/claude-code"
+      }
+    },
+    "refusing": {
+      "to": {
+        "start": "[待翻译] Refusing to start interop in invalid flag configuration."
+      }
+    },
+    "error": {
+      "tmux": {
+        "is": "[待翻译] Error: tmux is not available. Install tmux to use interop mode."
+      },
+      "claude": {
+        "cli": "[待翻译] Error: claude CLI is not available. Install Claude Code CLI first."
+      },
+      "interop": {
+        "mode": "[待翻译] Error: Interop mode requires running inside a tmux session."
+      },
+      "failed": {
+        "to": "[待翻译] Error: Failed to get current tmux pane ID"
+      },
+      "invalid": {
+        "tmux": "[待翻译] Error: Invalid tmux pane ID format"
+      },
+      "creating": {
+        "split": "[待翻译] Error creating split pane:"
+      }
+    },
+    "warning": {
+      "codex": {
+        "cli": "[待翻译] Warning: codex CLI is not available. Only Claude Code will be launched."
+      }
+    },
+    "start": {
+      "tmux": {
+        "first": "[待翻译] Start tmux first: tmux new-session -s myproject"
+      },
+      "or": {
+        "stop": "[待翻译] Start or stop the auto-resume daemon"
+      },
+      "claude": {
+        "code": "[待翻译] Start Claude Code and use /oh-my-claudecode:omc-setup for interactive setup."
+      }
+    },
+    "splitting": {
+      "pane": {
+        "left": "[待翻译] Splitting pane: Left (Claude Code) | Right (Codex)"
+      }
+    },
+    "ninterop": {
+      "session": {
+        "ready": "[待翻译] \\nInterop session ready!"
+      }
+    },
+    "left": {
+      "pane": {
+        "claude": "[待翻译] - Left pane: Claude Code (this terminal)"
+      }
+    },
+    "right": {
+      "pane": {
+        "codex": "[待翻译] - Right pane: Codex CLI"
+      }
+    },
+    "nyou": {
+      "can": {
+        "now": "[待翻译] \\nYou can now use interop MCP tools to communicate between the two:"
+      }
+    },
+    "nclaude": {
+      "code": {
+        "is": "[待翻译] \\nClaude Code is ready in this pane."
+      }
+    },
+    "ninstall": {
+      "npm": {
+        "install": "[待翻译] \\nInstall: npm install -g @openai/codex"
+      }
+    },
+    "discord": {
+      "bot": {
+        "requires": "[待翻译] Discord bot requires --channel-id <channel_id>"
+      }
+    },
+    "webhook": {
+      "requires": {
+        "webhook": "[待翻译] Webhook requires --webhook <url>"
+      }
+    },
+    "file": {
+      "callbacks": {
+        "are": "[待翻译] File callbacks are not supported in notification profiles."
+      }
+    },
+    "use": {
+      "without": {
+        "profile": "[待翻译] Use without --profile for file callbacks."
+      }
+    },
+    "failed": {
+      "to": {
+        "write": "[待翻译] Failed to write configuration:"
+      }
+    },
+    "telegram": {
+      "requires": {
+        "token": "[待翻译] Telegram requires --token <bot_token>"
+      }
+    },
+    "manage": {
+      "notification": {
+        "profiles": "[待翻译] Manage notification profiles"
+      }
+    },
+    "no": {
+      "notification": {
+        "profiles": "[待翻译] No notification profiles configured."
+      },
+      "installation": {
+        "metadata": "[待翻译]   No installation metadata found"
+      },
+      "worktrees": {
+        "found": "[待翻译] No worktrees found."
+      }
+    },
+    "create": {
+      "one": {
+        "with": "[待翻译] Create one with: omc config-stop-callback <type> --profile <name> --enable ..."
+      }
+    },
+    "notification": {
+      "profiles": "[待翻译] Notification profiles:"
+    },
+    "enabled": "[待翻译] enabled",
+    "disabled": "[待翻译] disabled",
+    "show": {
+      "system": {
+        "and": "[待翻译] Show system and agent information"
+      },
+      "detailed": {
+        "version": "[待翻译] Show detailed version information",
+        "rate": "[待翻译] Show detailed rate limit and daemon status"
+      }
+    },
+    "navailable": {
+      "agents": "[待翻译] \\nAvailable Agents:"
+    },
+    "nenabled": {
+      "features": "[待翻译] \\nEnabled Features:"
+    },
+    "nmcp": {
+      "servers": "[待翻译] \\nMCP Servers:"
+    },
+    "nmagic": {
+      "keywords": "[待翻译] \\nMagic Keywords:"
+    },
+    "test": {
+      "how": {
+        "a": "[待翻译] Test how a prompt would be enhanced"
+      }
+    },
+    "original": {
+      "prompt": "[待翻译] Original prompt:"
+    },
+    "ndetected": {
+      "magic": {
+        "keywords": "[待翻译] \\nDetected magic keywords:"
+      }
+    },
+    "nenhanced": {
+      "prompt": "[待翻译] \\nEnhanced prompt:"
+    },
+    "check": {
+      "for": {
+        "and": "[待翻译] Check for and install updates",
+        "plugin": "[待翻译] Check for plugin coexistence issues and configuration conflicts"
+      }
+    },
+    "oh": {
+      "my": {
+        "claudecode": "[待翻译] ✓ Oh-My-ClaudeCode installed successfully!"
+      }
+    },
+    "nrun": {
+      "without": {
+        "check": "[待翻译] \\nRun without --check to install the update."
+      }
+    },
+    "nstarting": {
+      "update": {
+        "n": "[待翻译] \\nStarting update...\\n"
+      }
+    },
+    "nplease": {
+      "restart": {
+        "your": "[待翻译] \\nPlease restart your Claude Code session to use the new version."
+      }
+    },
+    "internal": {
+      "reconcile": {
+        "runtime": "[待翻译] Internal: Reconcile runtime state after update (called by update command)"
+      }
+    },
+    "reconciliation": {
+      "failed": "[待翻译] Reconciliation failed:"
+    },
+    "run": "[待翻译]    Run: ",
+    "nto": {
+      "check": {
+        "for": "[待翻译] \\nTo check for updates, run: oh-my-claudecode update --check"
+      }
+    },
+    "": "[待翻译] ╚═══════════════════════════════════════════════════════════╝",
+    "multi": {
+      "agent": {
+        "orchestration": "[待翻译] ║   Multi-Agent Orchestration for Claude Code               ║"
+      }
+    },
+    "nuse": {
+      "force": {
+        "to": "[待翻译] \\nUse --force to reinstall."
+      }
+    },
+    "installation": {
+      "complete": "[待翻译] ║         Installation Complete!                            ║"
+    },
+    "installed": {
+      "to": {
+        "claude": "[待翻译] Installed to: ~/.claude/"
+      }
+    },
+    "usage": "[待翻译] Usage:",
+    "claude": {
+      "start": {
+        "claude": "[待翻译]   claude                        # Start Claude Code normally"
+      }
+    },
+    "slash": {
+      "commands": "[待翻译] Slash Commands:"
+    },
+    "ultrawork": {
+      "task": {
+        "maximum": "[待翻译]   /ultrawork <task>             # Maximum performance mode"
+      }
+    },
+    "deepsearch": {
+      "query": {
+        "thorough": "[待翻译]   /deepsearch <query>           # Thorough codebase search"
+      }
+    },
+    "analyze": {
+      "target": {
+        "deep": "[待翻译]   /analyze <target>             # Deep analysis mode"
+      }
+    },
+    "plan": {
+      "description": {
+        "start": "[待翻译]   /plan <description>           # Start planning with Planner"
+      }
+    },
+    "review": {
+      "plan": {
+        "path": "[待翻译]   /review [plan-path]           # Review plan with Critic"
+      }
+    },
+    "available": "[待翻译]   ✓ Available",
+    "base": {
+      "agents": "[待翻译]   Base Agents:"
+    },
+    "architect": {
+      "architecture": {
+        "debugging": "[待翻译]     architect              - Architecture & debugging (Opus)"
+      },
+      "medium": {
+        "simpler": "[待翻译]     architect-medium       - Simpler analysis (Sonnet)"
+      },
+      "low": {
+        "quick": "[待翻译]     architect-low          - Quick questions (Haiku)"
+      }
+    },
+    "document": {
+      "specialist": {
+        "external": "[待翻译]     document-specialist   - External docs & reference lookup (Sonnet)"
+      }
+    },
+    "explore": {
+      "fast": {
+        "pattern": "[待翻译]     explore             - Fast pattern matching (Haiku)"
+      }
+    },
+    "designer": {
+      "ui": {
+        "ux": "[待翻译]     designer            - UI/UX specialist (Sonnet)"
+      },
+      "high": {
+        "design": "[待翻译]     designer-high       - Design systems (Opus)"
+      },
+      "low": {
+        "simple": "[待翻译]     designer-low        - Simple styling (Haiku)"
+      }
+    },
+    "writer": {
+      "technical": {
+        "writing": "[待翻译]     writer              - Technical writing (Haiku)"
+      }
+    },
+    "vision": {
+      "visual": {
+        "analysis": "[待翻译]     vision              - Visual analysis (Sonnet)"
+      }
+    },
+    "critic": {
+      "plan": {
+        "review": "[待翻译]     critic               - Plan review (Opus)"
+      }
+    },
+    "analyst": {
+      "pre": {
+        "planning": "[待翻译]     analyst               - Pre-planning analysis (Opus)"
+      }
+    },
+    "debugger": {
+      "root": {
+        "cause": "[待翻译]     debugger            - Root-cause diagnosis (Sonnet)"
+      }
+    },
+    "executor": {
+      "focused": {
+        "execution": "[待翻译]     executor            - Focused execution (Sonnet)"
+      },
+      "high": {
+        "complex": "[待翻译]     executor-high       - Complex tasks (Opus)"
+      },
+      "low": {
+        "trivial": "[待翻译]     executor-low        - Trivial tasks (Haiku)"
+      }
+    },
+    "planner": {
+      "strategic": {
+        "planning": "[待翻译]     planner          - Strategic planning (Opus)"
+      }
+    },
+    "qa": {
+      "tester": {
+        "interactive": "[待翻译]     qa-tester           - Interactive CLI testing (Sonnet)"
+      }
+    },
+    "tiered": {
+      "variants": {
+        "for": "[待翻译]   Tiered Variants (for smart routing):"
+      }
+    },
+    "after": {
+      "updates": "[待翻译] After Updates:"
+    },
+    "to": {
+      "download": {
+        "the": "[待翻译]   to download the latest CLAUDE.md configuration."
+      },
+      "start": {
+        "working": "[待翻译] To start working:"
+      }
+    },
+    "this": {
+      "ensures": {
+        "you": "[待翻译]   This ensures you get the newest features and agent behaviors."
+      }
+    },
+    "quick": {
+      "start": "[待翻译] Quick Start:"
+    },
+    "example": {
+      "omc": {
+        "wait": "[待翻译] Example: omc wait daemon start"
+      }
+    },
+    "scan": {
+      "for": {
+        "blocked": "[待翻译] Scan for blocked Claude Code sessions in tmux"
+      }
+    },
+    "teleport": {
+      "quick": {
+        "worktree": "[待翻译] Teleport - Quick worktree creation\\n"
+      }
+    },
+    "reference": {
+      "formats": "[待翻译] Reference formats:"
+    },
+    "owner": {
+      "repo": {
+        "123": "[待翻译]   owner/repo#123               Issue/PR in specific repo"
+      }
+    },
+    "my": {
+      "feature": {
+        "feature": "[待翻译]   my-feature                   Feature branch name"
+      }
+    },
+    "https": {
+      "github": {
+        "com": "[待翻译]   https://github.com/...       GitHub URL"
+      }
+    },
+    "list": {
+      "existing": {
+        "worktrees": "[待翻译] List existing worktrees in ~/Workspace/omc-worktrees/"
+      }
+    },
+    "remove": {
+      "a": {
+        "worktree": "[待翻译] Remove a worktree"
+      }
+    },
+    "inspect": {
+      "prior": {
+        "local": "[待翻译] Inspect prior local session history"
+      }
+    },
+    "search": {
+      "prior": {
+        "local": "[待翻译] Search prior local session transcripts and OMC session artifacts"
+      }
+    },
+    "diagnostic": {
+      "tools": {
+        "for": "[待翻译] Diagnostic tools for troubleshooting OMC installation"
+      }
+    },
+    "hooks": {
+      "configured": "[待翻译]   Hooks:    configured"
+    },
+    "hook": {
+      "conflicts": {
+        "detected": "[待翻译]   Hook conflicts detected:"
+      }
+    },
+    "could": {
+      "not": {
+        "complete": "[待翻译] ⚠ Could not complete OMC setup:"
+      }
+    },
+    "render": {
+      "the": {
+        "opt": "[待翻译] Render the opt-in mission board snapshot for the current workspace"
+      }
+    },
+    "team": {
+      "cli": {
+        "api": "[待翻译] Team CLI API for worker lifecycle operations"
+      }
+    },
+    "n": {
+      "rate": {
+        "limit": "[待翻译] \\n📊 Rate Limit Wait Status\\n"
+      }
+    },
+    "unable": {
+      "to": {
+        "check": "[待翻译]   ? Unable to check (no OAuth credentials?)"
+      }
+    },
+    "rate": {
+      "limit": {
+        "monitoring": "[待翻译] Rate limit monitoring requires Claude Pro/Max subscription."
+      }
+    },
+    "brew": {
+      "install": {
+        "tmux": "[待翻译]    brew install tmux  (macOS)"
+      }
+    },
+    "apt": {
+      "install": {
+        "tmux": "[待翻译]    apt install tmux   (Linux)\\n"
+      }
+    },
+    "want": {
+      "to": {
+        "auto": "[待翻译] 💡 Want to auto-resume when the limit clears?"
+      }
+    },
+    "auto": {
+      "resume": {
+        "daemon": "[待翻译] Auto-resume daemon is running (not needed when not rate limited)",
+        "sessions": "[待翻译]   • Auto-resume sessions when rate limit clears"
+      }
+    },
+    "your": {
+      "session": {
+        "will": "[待翻译]   Your session will resume automatically when the limit clears.\\n"
+      }
+    },
+    "blocked": {
+      "panes": {
+        "can": "[待翻译] Blocked panes can still be tracked if detected.\\n"
+      }
+    },
+    "not": {
+      "rate": {
+        "limited": "[待翻译]   ✓ Not rate limited"
+      },
+      "running": "[待翻译]   ○ Not running",
+      "installed": "[待翻译]   ⚠ Not installed"
+    },
+    "stop": {
+      "with": {
+        "omc": "[待翻译] Stop with: omc wait --stop\\n"
+      }
+    },
+    "nrate": {
+      "limits": "[待翻译] \\nRate Limits:"
+    },
+    "ndaemon": "[待翻译] \\nDaemon:",
+    "never": {
+      "started": "[待翻译]   ○ Never started"
+    },
+    "ntmux": "[待翻译] \\ntmux:",
+    "currently": {
+      "inside": {
+        "tmux": "[待翻译]     Currently inside tmux session"
+      }
+    },
+    "nthe": {
+      "daemon": {
+        "will": "[待翻译] \\nThe daemon will:"
+      }
+    },
+    "poll": {
+      "rate": {
+        "limit": "[待翻译]   • Poll rate limit status every minute"
+      }
+    },
+    "track": {
+      "blocked": {
+        "claude": "[待翻译]   • Track blocked Claude Code sessions in tmux"
+      }
+    },
+    "tmux": {
+      "is": {
+        "not": "[待翻译] ⚠ tmux is not installed"
+      }
+    },
+    "scanning": {
+      "for": {
+        "blocked": "[待翻译] Scanning for blocked Claude Code sessions...\\n"
+      }
+    },
+    "ntip": {
+      "start": {
+        "the": "[待翻译] \\nTip: Start the daemon to auto-resume when rate limit clears:"
+      }
+    },
+    "ncurrent": {
+      "rate": {
+        "limit": "[待翻译] \\nCurrent Rate Limit:"
+      }
+    },
+    "worktree": {
+      "created": {
+        "successfully": "[待翻译] Worktree created successfully!"
+      }
+    },
+    "nomc": {
+      "worktrees": {
+        "n": "[待翻译] \\nOMC Worktrees:\\n"
+      }
     }
   },
   "hud": {
@@ -260,6 +901,41 @@
       "mode": "Ralph 模式",
       "active": "激活",
       "inactive": "未激活"
+    },
+    "usage": {
+      "api": {
+        "anthropic": "[待翻译] [usage-api] Anthropic API returned 429 (rate limited)",
+        "z": "[待翻译] [usage-api] z.ai API returned 429 (rate limited)",
+        "failed": "[待翻译] [usage-api] Failed to write back refreshed credentials"
+      }
+    },
+    "hud": {
+      "failed": {
+        "to": "[待翻译] [HUD] Failed to write config:"
+      },
+      "version": {
+        "detection": "[待翻译] [HUD] Version detection error:"
+      },
+      "update": {
+        "cache": "[待翻译] [HUD] Update cache read error:"
+      },
+      "auto": {
+        "compact": "[待翻译] [HUD] Auto-compact trigger write error:"
+      }
+    },
+    "omc": {
+      "starting": "[待翻译] [OMC] Starting...",
+      "run": {
+        "omc": "[待翻译] [OMC] run /omc-setup to install properly"
+      },
+      "hud": {
+        "error": "[待翻译] [OMC] HUD error - check stderr"
+      }
+    },
+    "custom": {
+      "rate": {
+        "provider": "[待翻译] [custom-rate-provider] Invalid output format from command"
+      }
     }
   },
   "notifications": {
@@ -270,7 +946,12 @@
     "sessionIdle": "会话空闲",
     "error": "错误: {{message}}",
     "warning": "警告: {{message}}",
-    "info": "信息: {{message}}"
+    "info": "信息: {{message}}",
+    "reply": {
+      "listener": {
+        "fatal": "[待翻译] [reply-listener] Fatal:"
+      }
+    }
   },
   "common": {
     "enabled": "已启用",
@@ -305,5 +986,314 @@
     "hours_plural": "{{count}} 小时",
     "days": "{{count}} 天",
     "days_plural": "{{count}} 天"
+  },
+  "utils": {
+    "ssrf": {
+      "guard": {
+        "warning": "[待翻译] [SSRF Guard] Warning: Using HTTP instead of HTTPS for ANTHROPIC_BASE_URL"
+      }
+    }
+  },
+  "team": {
+    "watchdog": {
+      "tick": {
+        "error": "[待翻译] [watchdog] tick error:"
+      }
+    },
+    "usage": {
+      "node": {
+        "bridge": "[待翻译] Usage: node bridge-entry.js --config <path-to-config.json>"
+      }
+    },
+    "permissions": {
+      "allowedpaths": {
+        "must": "[待翻译] permissions.allowedPaths must be an array of strings"
+      },
+      "deniedpaths": {
+        "must": "[待翻译] permissions.deniedPaths must be an array of strings"
+      },
+      "allowedcommands": {
+        "must": "[待翻译] permissions.allowedCommands must be an array of strings"
+      }
+    }
+  },
+  "openclaw": {
+    "openclaw": {
+      "wakeopenclaw": {
+        "error": "[待翻译] [openclaw] wakeOpenClaw error:"
+      }
+    }
+  },
+  "mcp": {
+    "omc": {
+      "team": {
+        "mcp": "[待翻译] OMC Team MCP Server running on stdio"
+      },
+      "tools": {
+        "mcp": "[待翻译] OMC Tools MCP Server running on stdio"
+      }
+    },
+    "failed": {
+      "to": {
+        "start": "[待翻译] Failed to start server:"
+      }
+    },
+    "mcp": {
+      "config": {
+        "warning": "[待翻译] [MCP Config] WARNING: OMC_MCP_ALLOW_EXTERNAL_PROMPT is enabled. External prompt files outside the working directory are allowed. This may pose a security risk."
+      }
+    }
+  },
+  "lib": {
+    "worktree": {
+      "non": {
+        "git": "[待翻译] [worktree] non-git directory provided, falling back to process root"
+      },
+      "workingdirectory": {
+        "resolved": "[待翻译] [worktree] workingDirectory resolved to different git worktree root, using trusted root"
+      }
+    },
+    "job": {
+      "state": {
+        "db": "[待翻译] [job-state-db] Failed to get job stats:"
+      }
+    },
+    "run": {
+      "npm": {
+        "run": "[待翻译] Run: npm run sync-featured-contributors"
+      }
+    }
+  },
+  "installer": {
+    "omc": {
+      "hud": {
+        "plugin": "[待翻译] [OMC HUD] Plugin not installed. Run: /oh-my-claudecode:omc-setup"
+      }
+    }
+  },
+  "hooks": {
+    "usage": {
+      "node": {
+        "hook": "[待翻译] Usage: node hook-bridge.mjs --hook=<type>"
+      }
+    },
+    "invalid": {
+      "hook": {
+        "argument": "[待翻译] Invalid hook argument format: missing hook type"
+      }
+    },
+    "hook": {
+      "bridge": {
+        "fatal": "[待翻译] [hook-bridge] Fatal error:"
+      }
+    },
+    "bridge": {
+      "normalize": {
+        "zod": "[待翻译] [bridge-normalize] Zod validation warning:"
+      }
+    },
+    "todo": {
+      "continuation": "[待翻译] [todo-continuation]"
+    },
+    "subagenttracker": {
+      "error": {
+        "reading": "[待翻译] [SubagentTracker] Error reading disk state:",
+        "writing": "[待翻译] [SubagentTracker] Error writing state:",
+        "clearing": "[待翻译] [SubagentTracker] Error clearing state:"
+      }
+    },
+    "stop": {
+      "callback": {
+        "file": "[待翻译] [stop-callback] File write failed:",
+        "telegram": "[待翻译] [stop-callback] Telegram send failed:",
+        "discord": "[待翻译] [stop-callback] Discord send failed:",
+        "callback": "[待翻译] [stop-callback] Callback execution error:"
+      }
+    },
+    "failed": {
+      "to": {
+        "save": "[待翻译] Failed to save project memory:"
+      }
+    },
+    "error": {
+      "in": {
+        "project": "[待翻译] Error in project memory PreCompact handler:"
+      },
+      "learning": {
+        "from": "[待翻译] Error learning from tool output:"
+      },
+      "adding": {
+        "custom": "[待翻译] Error adding custom note:"
+      },
+      "registering": {
+        "project": "[待翻译] Error registering project memory context:"
+      }
+    },
+    "precompact": {
+      "error": {
+        "reading": "[待翻译] [PreCompact] Error reading job state DB:",
+        "saving": "[待翻译] [PreCompact] Error saving wisdom:"
+      }
+    },
+    "learner": {
+      "error": {
+        "writing": "[待翻译] [learner] Error writing skill file:",
+        "scanning": "[待翻译] [learner] Error scanning directory:",
+        "creating": "[待翻译] [learner] Error creating skills directory:",
+        "loading": "[待翻译] [learner] Error loading config:",
+        "saving": "[待翻译] [learner] Error saving config:"
+      },
+      "symlink": {
+        "escape": "[待翻译] [learner] Symlink escape blocked:"
+      }
+    },
+    "auto": {
+      "invoke": {
+        "failed": "[待翻译] [auto-invoke] Failed to get aggregated stats:"
+      }
+    }
+  },
+  "features": {
+    "1": {
+      "testing": {
+        "resolvecategory": "[待翻译] 1. Testing resolveCategory():"
+      }
+    },
+    "2": {
+      "testing": {
+        "isvalidcategory": "[待翻译] 2. Testing isValidCategory():"
+      }
+    },
+    "3": {
+      "testing": {
+        "getcategorydescription": "[待翻译] 3. Testing getCategoryDescription():"
+      }
+    },
+    "4": {
+      "testing": {
+        "detectcategoryfromprompt": "[待翻译] 4. Testing detectCategoryFromPrompt():"
+      }
+    },
+    "5": {
+      "testing": {
+        "getcategoryfortask": "[待翻译] 5. Testing getCategoryForTask():"
+      }
+    },
+    "6": {
+      "testing": {
+        "tier": "[待翻译] 6. Testing tier extraction:"
+      }
+    },
+    "7": {
+      "testing": {
+        "enhancepromptwithcategory": "[待翻译] 7. Testing enhancePromptWithCategory():"
+      }
+    },
+    "8": {
+      "testing": {
+        "backward": "[待翻译] 8. Testing backward compatibility with ComplexityTier:"
+      }
+    },
+    "error": {
+      "reading": {
+        "version": "[待翻译] Error reading version file:"
+      }
+    },
+    "background": {
+      "update": {
+        "check": "[待翻译] Background update check failed:"
+      }
+    },
+    "starting": {
+      "update": {
+        "n": "[待翻译] Starting update...\\n"
+      }
+    },
+    "nplease": {
+      "restart": {
+        "your": "[待翻译] \\nPlease restart your Claude Code session to use the new version."
+      }
+    },
+    "update": {
+      "check": {
+        "failed": "[待翻译] Update check failed:"
+      }
+    },
+    "tmuxdetector": {
+      "error": {
+        "listing": "[待翻译] [TmuxDetector] Error listing panes:"
+      }
+    },
+    "ratelimitmonitor": {
+      "error": {
+        "checking": "[待翻译] [RateLimitMonitor] Error checking rate limit:"
+      }
+    },
+    "ratelimitdaemon": {
+      "tmux": {
+        "not": "[待翻译] [RateLimitDaemon] tmux not available - resume functionality will be limited"
+      }
+    },
+    "nshutting": {
+      "down": {
+        "daemon": "[待翻译] \\nShutting down daemon..."
+      }
+    },
+    "rate": {
+      "limit": {
+        "wait": "[待翻译] Rate Limit Wait daemon starting in foreground mode..."
+      }
+    },
+    "press": {
+      "ctrl": {
+        "c": "[待翻译] Press Ctrl+C to stop.\\n"
+      }
+    },
+    "failed": {
+      "to": {
+        "initialize": "[待翻译] Failed to initialize plan notepad:"
+      }
+    },
+    "omc": {
+      "codex": {
+        "gemini": "[待翻译] [OMC] Codex/Gemini MCP delegation is deprecated. Use /team to coordinate CLI workers instead."
+      }
+    },
+    "delegation": {
+      "categories": {
+        "test": "[待翻译] === Delegation Categories Test ===\\n"
+      }
+    },
+    "categories": {
+      "map": {
+        "to": "[待翻译]   Categories map to tiers:"
+      }
+    },
+    "all": {
+      "tests": {
+        "completed": "[待翻译] === All tests completed ==="
+      }
+    }
+  },
+  "commands": {
+    "error": {
+      "listing": {
+        "commands": "[待翻译] Error listing commands:"
+      }
+    }
+  },
+  "agents": {
+    "prompt": {
+      "injection": {
+        "critical": "[待翻译] [prompt-injection] CRITICAL: Could not scan agents/ directory for role discovery:"
+      }
+    }
+  },
+  "tools": {
+    "lsp": {
+      "response": {
+        "buffer": "[待翻译] [LSP] Response buffer exceeded 50MB limit, resetting"
+      }
+    }
   }
 }
