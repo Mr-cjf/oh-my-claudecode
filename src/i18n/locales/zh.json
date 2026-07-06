@@ -186,7 +186,7 @@
         "that": "需要TMUX的OMC功能将不起作用。"
       },
       "error": {
-        "claude": "[待翻译] [omc] Error: claude CLI not found. Install Claude Code first:",
+        "claude": "[omc]错误：在路径中找不到claude CLI。",
         "already": "[omc]错误：已在Claude Code会话中。不支持嵌套启动。"
       },
       "is": {
@@ -214,13 +214,13 @@
         "for": "安装psmux for native Windows tmux支持： winget install psmux"
       },
       "oh": {
-        "my": "[待翻译] Install oh-my-codex to enable split-pane interop mode."
+        "my": "安装oh-my-codex （ npm install -g @ openai/codex ）以获得完整的互操作支持。\\ n"
       },
       "omc": {
         "agents": "将OMC代理和命令安装到Claude Code配置(~/.claude/)"
       },
       "tmux": {
-        "to": "[待翻译] Install tmux to use session detection and auto-resume",
+        "to": "💡 安装tmux以在限制清除时启用自动恢复",
         "for": "安装tmux以实现自动恢复功能"
       }
     },
@@ -315,7 +315,7 @@
     },
     "discord": {
       "bot": {
-        "requires": "[待翻译] Discord bot requires --channel-id <channel_id>"
+        "requires": "Discord机器人需要--token <bot_token>"
       }
     },
     "webhook": {
@@ -414,7 +414,7 @@
     },
     "oh": {
       "my": {
-        "claudecode": "[待翻译] ✓ Oh-My-ClaudeCode installed successfully!"
+        "claudecode": "Oh-My-ClaudeCode安装程序\\ n"
       }
     },
     "nrun": {
@@ -440,13 +440,13 @@
     "reconciliation": {
       "failed": "对账失败："
     },
-    "run": "[待翻译]    Run: ",
+    "run": "得分",
     "nto": {
       "check": {
         "for": "\\ n要检查更新，请运行： oh-my-claudecode update --check"
       }
     },
-    "": "[待翻译] ╚═══════════════════════════════════════════════════════════╝",
+    "": "╔═══════════════════════════════════════════════════════════╗",
     "multi": {
       "agent": {
         "orchestration": "Claude Code的多║代理编排               ║"
@@ -688,12 +688,12 @@
     },
     "n": {
       "rate": {
-        "limit": "[待翻译] \\n📊 Rate Limit Wait Status\\n"
+        "limit": "\\ n🕐速率限制状态\\ n"
       }
     },
     "unable": {
       "to": {
-        "check": "[待翻译]   ? Unable to check (no OAuth credentials?)"
+        "check": "无法检查速率限制（需要OAuth凭据）\\ n"
       }
     },
     "rate": {
@@ -718,7 +718,7 @@
     },
     "auto": {
       "resume": {
-        "daemon": "[待翻译] Auto-resume daemon is running (not needed when not rate limited)",
+        "daemon": "使用数据已过时，自动恢复后台程序正在运行。",
         "sessions": "•当速率限制清除时自动恢复会话"
       }
     },
@@ -734,7 +734,7 @@
     },
     "not": {
       "rate": {
-        "limited": "[待翻译]   ✓ Not rate limited"
+        "limited": "✓ 非费率限制\\ n"
       },
       "running": "正在运行",
       "installed": "未安装"
@@ -911,7 +911,7 @@
     },
     "hud": {
       "failed": {
-        "to": "[待翻译] [HUD] Failed to write config:"
+        "to": "[HUD]无法读取旧版配置："
       },
       "version": {
         "detection": "[HUD]版本检测错误："
@@ -1055,7 +1055,7 @@
     },
     "job": {
       "state": {
-        "db": "[待翻译] [job-state-db] Failed to get job stats:"
+        "db": "[job-state-db]清理旧作业失败："
       }
     },
     "run": {
@@ -1067,7 +1067,7 @@
   "installer": {
     "omc": {
       "hud": {
-        "plugin": "[待翻译] [OMC HUD] Plugin not installed. Run: /oh-my-claudecode:omc-setup"
+        "plugin": "[OMC HUD]找到插件缓存，但未安装版本。运行：/oh-my-claudecode: omc-setup"
       }
     }
   },
@@ -1105,8 +1105,8 @@
     "stop": {
       "callback": {
         "file": "[stop-callback]文件写入失败：",
-        "telegram": "[待翻译] [stop-callback] Telegram send failed:",
-        "discord": "[待翻译] [stop-callback] Discord send failed:",
+        "telegram": "[stop-callback] Telegram通知已发送",
+        "discord": "[stop-callback] Discord通知已发送",
         "callback": "[stop-callback]回调执行错误："
       }
     },
@@ -1131,8 +1131,8 @@
     },
     "precompact": {
       "error": {
-        "reading": "[待翻译] [PreCompact] Error reading job state DB:",
-        "saving": "[待翻译] [PreCompact] Error saving wisdom:"
+        "reading": "[PreCompact]读取智能文件时出错：",
+        "saving": "[PreCompact]保存检查点时出错："
       }
     },
     "learner": {
@@ -1149,7 +1149,7 @@
     },
     "auto": {
       "invoke": {
-        "failed": "[待翻译] [auto-invoke] Failed to get aggregated stats:"
+        "failed": "[auto-invoke]加载调用历史记录失败："
       }
     }
   },
