@@ -186,7 +186,7 @@
         "that": "   OMC features that require tmux will not work."
       },
       "error": {
-        "claude": "[omc] Error: claude CLI not found in PATH.",
+        "claude": "[omc] Error: claude CLI not found. Install Claude Code first:",
         "already": "[omc] Error: Already inside a Claude Code session. Nested launches are not supported."
       },
       "is": {
@@ -214,13 +214,13 @@
         "for": "   Install psmux for native Windows tmux support: winget install psmux"
       },
       "oh": {
-        "my": "Install oh-my-codex (npm install -g @openai/codex) for full interop support.\\n"
+        "my": "Install oh-my-codex to enable split-pane interop mode."
       },
       "omc": {
         "agents": "Install OMC agents and commands to Claude Code config (~/.claude/)"
       },
       "tmux": {
-        "to": "💡 Install tmux to enable auto-resume when limit clears",
+        "to": "Install tmux to use session detection and auto-resume",
         "for": "    Install tmux for auto-resume functionality"
       }
     },
@@ -315,7 +315,7 @@
     },
     "discord": {
       "bot": {
-        "requires": "Discord bot requires --token <bot_token>"
+        "requires": "Discord bot requires --channel-id <channel_id>"
       }
     },
     "webhook": {
@@ -414,7 +414,7 @@
     },
     "oh": {
       "my": {
-        "claudecode": "Oh-My-ClaudeCode Setup\\n"
+        "claudecode": "✓ Oh-My-ClaudeCode installed successfully!"
       }
     },
     "nrun": {
@@ -440,13 +440,13 @@
     "reconciliation": {
       "failed": "Reconciliation failed:"
     },
-    "run": "  Run \\",
+    "run": "   Run: ",
     "nto": {
       "check": {
         "for": "\\nTo check for updates, run: oh-my-claudecode update --check"
       }
     },
-    "": "╔═══════════════════════════════════════════════════════════╗",
+    "": "╚═══════════════════════════════════════════════════════════╝",
     "multi": {
       "agent": {
         "orchestration": "║   Multi-Agent Orchestration for Claude Code               ║"
@@ -688,12 +688,12 @@
     },
     "n": {
       "rate": {
-        "limit": "\\n🕐 Rate Limit Status\\n"
+        "limit": "\\n📊 Rate Limit Wait Status\\n"
       }
     },
     "unable": {
       "to": {
-        "check": "Unable to check rate limits (OAuth credentials required)\\n"
+        "check": "  ? Unable to check (no OAuth credentials?)"
       }
     },
     "rate": {
@@ -718,7 +718,7 @@
     },
     "auto": {
       "resume": {
-        "daemon": "Auto-resume daemon is running while usage data is stale.",
+        "daemon": "Auto-resume daemon is running (not needed when not rate limited)",
         "sessions": "  • Auto-resume sessions when rate limit clears"
       }
     },
@@ -734,7 +734,7 @@
     },
     "not": {
       "rate": {
-        "limited": "✓ Not rate limited\\n"
+        "limited": "  ✓ Not rate limited"
       },
       "running": "  ○ Not running",
       "installed": "  ⚠ Not installed"
@@ -911,7 +911,7 @@
     },
     "hud": {
       "failed": {
-        "to": "[HUD] Failed to read legacy config:"
+        "to": "[HUD] Failed to write config:"
       },
       "version": {
         "detection": "[HUD] Version detection error:"
@@ -1055,7 +1055,7 @@
     },
     "job": {
       "state": {
-        "db": "[job-state-db] Failed to cleanup old jobs:"
+        "db": "[job-state-db] Failed to get job stats:"
       }
     },
     "run": {
@@ -1067,7 +1067,7 @@
   "installer": {
     "omc": {
       "hud": {
-        "plugin": "[OMC HUD] Plugin cache found but no versions installed. Run: /oh-my-claudecode:omc-setup"
+        "plugin": "[OMC HUD] Plugin not installed. Run: /oh-my-claudecode:omc-setup"
       }
     }
   },
@@ -1105,8 +1105,8 @@
     "stop": {
       "callback": {
         "file": "[stop-callback] File write failed:",
-        "telegram": "[stop-callback] Telegram notification sent",
-        "discord": "[stop-callback] Discord notification sent",
+        "telegram": "[stop-callback] Telegram send failed:",
+        "discord": "[stop-callback] Discord send failed:",
         "callback": "[stop-callback] Callback execution error:"
       }
     },
@@ -1131,8 +1131,8 @@
     },
     "precompact": {
       "error": {
-        "reading": "[PreCompact] Error reading wisdom files:",
-        "saving": "[PreCompact] Error saving checkpoint:"
+        "reading": "[PreCompact] Error reading job state DB:",
+        "saving": "[PreCompact] Error saving wisdom:"
       }
     },
     "learner": {
@@ -1149,7 +1149,7 @@
     },
     "auto": {
       "invoke": {
-        "failed": "[auto-invoke] Failed to load invocation history:"
+        "failed": "[auto-invoke] Failed to get aggregated stats:"
       }
     }
   },
