@@ -186,7 +186,7 @@
         "that": "需要TMUX的OMC功能将不起作用。"
       },
       "error": {
-        "claude": "[omc]错误：在路径中找不到claude CLI。",
+        "claude": "[omc]错误：未找到claude CLI。首先安装Claude Code ：",
         "already": "[omc]错误：已在Claude Code会话中。不支持嵌套启动。"
       },
       "is": {
@@ -214,13 +214,13 @@
         "for": "安装psmux for native Windows tmux支持： winget install psmux"
       },
       "oh": {
-        "my": "安装oh-my-codex （ npm install -g @ openai/codex ）以获得完整的互操作支持。\\ n"
+        "my": "安装oh-my-codex以启用分割窗格互操作模式。"
       },
       "omc": {
         "agents": "将OMC代理和命令安装到Claude Code配置(~/.claude/)"
       },
       "tmux": {
-        "to": "💡 安装tmux以在限制清除时启用自动恢复",
+        "to": "安装tmux以使用会话检测和自动恢复",
         "for": "安装tmux以实现自动恢复功能"
       }
     },
@@ -315,7 +315,7 @@
     },
     "discord": {
       "bot": {
-        "requires": "Discord机器人需要--token <bot_token>"
+        "requires": "Discord智能小助手需要--channel-id <channel_id>"
       }
     },
     "webhook": {
@@ -414,7 +414,7 @@
     },
     "oh": {
       "my": {
-        "claudecode": "Oh-My-ClaudeCode安装程序\\ n"
+        "claudecode": "✓ Oh-My-ClaudeCode安装成功！"
       }
     },
     "nrun": {
@@ -440,13 +440,13 @@
     "reconciliation": {
       "failed": "对账失败："
     },
-    "run": "得分",
+    "run": "运行：",
     "nto": {
       "check": {
         "for": "\\ n要检查更新，请运行： oh-my-claudecode update --check"
       }
     },
-    "": "╔═══════════════════════════════════════════════════════════╗",
+    "": "╚═══════════════════════════════════════════════════════════╝",
     "multi": {
       "agent": {
         "orchestration": "Claude Code的多║代理编排               ║"
@@ -688,12 +688,12 @@
     },
     "n": {
       "rate": {
-        "limit": "\\ n🕐速率限制状态\\ n"
+        "limit": "\\ n📊速率限制等待状态\\ n"
       }
     },
     "unable": {
       "to": {
-        "check": "无法检查速率限制（需要OAuth凭据）\\ n"
+        "check": "?无法检查（没有OAuth凭据？ ）"
       }
     },
     "rate": {
@@ -718,7 +718,7 @@
     },
     "auto": {
       "resume": {
-        "daemon": "使用数据已过时，自动恢复后台程序正在运行。",
+        "daemon": "自动恢复守护进程正在运行（在不受速率限制时不需要）",
         "sessions": "•当速率限制清除时自动恢复会话"
       }
     },
@@ -734,7 +734,7 @@
     },
     "not": {
       "rate": {
-        "limited": "✓ 非费率限制\\ n"
+        "limited": "✓ 不受费率限制"
       },
       "running": "正在运行",
       "installed": "未安装"
@@ -911,7 +911,7 @@
     },
     "hud": {
       "failed": {
-        "to": "[HUD]无法读取旧版配置："
+        "to": "[HUD]写入配置失败："
       },
       "version": {
         "detection": "[HUD]版本检测错误："
@@ -1055,7 +1055,7 @@
     },
     "job": {
       "state": {
-        "db": "[job-state-db]清理旧作业失败："
+        "db": "[job-state-db]无法获取作业统计信息："
       }
     },
     "run": {
@@ -1067,7 +1067,7 @@
   "installer": {
     "omc": {
       "hud": {
-        "plugin": "[OMC HUD]找到插件缓存，但未安装版本。运行：/oh-my-claudecode: omc-setup"
+        "plugin": "[OMC HUD]插件未安装。运行：/oh-my-claudecode: omc-setup"
       }
     }
   },
@@ -1105,8 +1105,8 @@
     "stop": {
       "callback": {
         "file": "[stop-callback]文件写入失败：",
-        "telegram": "[stop-callback] Telegram通知已发送",
-        "discord": "[stop-callback] Discord通知已发送",
+        "telegram": "[stop-callback]电报发送失败：",
+        "discord": "[stop-callback] Discord发送失败：",
         "callback": "[stop-callback]回调执行错误："
       }
     },
@@ -1131,8 +1131,8 @@
     },
     "precompact": {
       "error": {
-        "reading": "[PreCompact]读取智能文件时出错：",
-        "saving": "[PreCompact]保存检查点时出错："
+        "reading": "[PreCompact]读取作业状态数据库时出错：",
+        "saving": "[PreCompact]保存智慧时出错："
       }
     },
     "learner": {
@@ -1149,7 +1149,7 @@
     },
     "auto": {
       "invoke": {
-        "failed": "[auto-invoke]加载调用历史记录失败："
+        "failed": "[auto-invoke]无法获取聚合统计信息："
       }
     }
   },
